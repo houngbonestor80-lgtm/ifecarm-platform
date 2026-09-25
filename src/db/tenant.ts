@@ -75,6 +75,7 @@ export type PlatformAdminOp =
   | 'revoquer_acces_consultant'
   | 'lister_entreprises'
   | 'consulter_journal_audit_global'
+  | 'gerer_catalogue_formation'
 
 const PLATFORM_ADMIN_OPS = new Set<PlatformAdminOp>([
   'creer_entreprise',
@@ -85,6 +86,7 @@ const PLATFORM_ADMIN_OPS = new Set<PlatformAdminOp>([
   'revoquer_acces_consultant',
   'lister_entreprises',
   'consulter_journal_audit_global',
+  'gerer_catalogue_formation',
 ])
 
 export interface PlatformAdminParams {
