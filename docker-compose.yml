@@ -1,0 +1,42 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_superuser_dev_only
+      POSTGRES_DB: ifecarm
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Rejoué automatiquement au tout premier démarrage du conteneur.
+      - ./docker/init-roles.sql:/docker-entrypoint-initdb.d/01-init-roles.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d ifecarm']
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  minio:
+    # MinIO a arrêté de publier sur Docker Hub (minio/minio) ; quay.io est
+    # désormais leur registre à jour. Tag de version précis, pas `:latest` —
+    # `:latest` n'est pas résolu de façon fiable sur quay.io (401 constaté).
+    image: quay.io/minio/minio:RELEASE.2025-09-06T17-38-46Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ifecarm_dev
+      MINIO_ROOT_PASSWORD: ifecarm_dev_password
+    ports:
+      - '9000:9000' # API S3
+      - '9001:9001' # console web
+    volumes:
+      - miniodata:/data
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  pgdata:
+  miniodata:
