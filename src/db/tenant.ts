@@ -76,6 +76,8 @@ export type PlatformAdminOp =
   | 'lister_entreprises'
   | 'consulter_journal_audit_global'
   | 'gerer_catalogue_formation'
+  | 'gerer_catalogue_inspection'
+  | 'consulter_indicateurs_plateforme'
 
 const PLATFORM_ADMIN_OPS = new Set<PlatformAdminOp>([
   'creer_entreprise',
@@ -87,6 +89,8 @@ const PLATFORM_ADMIN_OPS = new Set<PlatformAdminOp>([
   'lister_entreprises',
   'consulter_journal_audit_global',
   'gerer_catalogue_formation',
+  'gerer_catalogue_inspection',
+  'consulter_indicateurs_plateforme',
 ])
 
 export interface PlatformAdminParams {
