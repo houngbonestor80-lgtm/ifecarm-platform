@@ -78,6 +78,8 @@ CREATE POLICY cloisonnement_role_utilisateur ON role_utilisateur
     OR current_setting('app.platform_admin', true) = 'true'
   );
 
+-- Écriture réservée à platform_admin : décision actée, cf. commentaire
+-- détaillé de la même politique dans 0001_socle.sql.
 DROP POLICY cloisonnement_acces_consultant ON acces_consultant;
 CREATE POLICY cloisonnement_acces_consultant ON acces_consultant
   USING (

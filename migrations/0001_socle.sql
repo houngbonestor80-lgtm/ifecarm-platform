@@ -431,6 +431,14 @@ CREATE POLICY cloisonnement_role_utilisateur ON role_utilisateur
 -- cette table qui répond à cette question. D'où le second OR sur
 -- utilisateur_id, pour la résolution post-connexion. Écriture (accorder/
 -- révoquer un accès) réservée à admin_plateforme.
+--
+-- Décision actée (arbitrage du 28/09/2026) : ce choix est délibéré, pas un
+-- oubli. Décider quel consultant IFECARM est affecté à quel client est une
+-- décision contractuelle interne à IFECARM ; un admin_entreprise n'a donc
+-- PAS le droit d'accorder ni de révoquer un accès consultant depuis son
+-- propre compte — sinon le client organiserait en partie le travail interne
+-- d'IFECARM. Il peut en revanche LIRE les consultants ayant accès à son
+-- entreprise (premier OR ci-dessous).
 CREATE POLICY cloisonnement_acces_consultant ON acces_consultant
   USING (
     entreprise_id = NULLIF(current_setting('app.entreprise_id', true), '')::uuid
