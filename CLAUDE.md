@@ -108,7 +108,7 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 - Notes par formation demandée (évoqué, non précisé).
 
 ## Habitudes de travail
-
+- Ne jamais commiter, pousser ni déployer sans ordre explicite de l'utilisateur, à ce moment précis. Tout travail reste local tant qu'il n'a pas dit « pousse-le ».
 - Lire seulement le nécessaire (Grep avant Read), modifier par petits Edit, sorties de commandes filtrées.
 - Montrer migrations et tests de cloisonnement avant d'attaquer les écrans.
 - En fin de session, mettre à jour ce fichier (état des modules, décisions, prochaines étapes) en restant court.
