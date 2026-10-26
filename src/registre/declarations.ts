@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { sql } from 'kysely'
 import type { Transaction } from 'kysely'
 import { ecrireJournal } from '@/db/journal'
@@ -68,12 +69,28 @@ export async function creerDeclaration(
   // La contrainte CHECK en base bloque déjà declarant_id/salarie_id non-NULL
   // sur une ligne anonyme ; on ne prend pas le risque de laisser passer une
   // valeur fournie par erreur par l'appelant avant même d'atteindre la base.
-  const declarantId = params.anonyme ? null : (params.declarantId ?? null)
+  const declarantId = params.anonyme ? null : (params.declarantId ?? params.utilisateurId)
   const salarieId = params.anonyme ? null : (params.salarieId ?? null)
 
-  const insere = await trx
+  // Pas de RETURNING : depuis 0035, un déclarant ne peut pas relire une déclaration anonyme (RLS), et
+  // INSERT ... RETURNING exige le droit de lecture sur la ligne insérée. L'identifiant est donc généré ici.
+  const id = randomUUID()
+
+  // Rejeu : pas d'INSERT ... ON CONFLICT — avec une clause ON CONFLICT, Postgres exige aussi le droit de
+  // LIRE la ligne insérée, ce que la RLS refuse à l'auteur d'une déclaration anonyme (0035). On sérialise
+  // donc par verrou consultatif (entreprise + clé client), puis on cherche la clé via la fonction dédiée,
+  // qui ne renvoie jamais le contenu.
+  let existante: { id: string, reference: string } | undefined
+  if (params.cleClient) {
+    await sql`select pg_advisory_xact_lock(hashtext(${'declaration:' + params.entrepriseId + ':' + params.cleClient}))`.execute(trx)
+    existante = (await sql<{ id: string, reference: string }>`select * from chercher_declaration_par_cle(${params.cleClient})`.execute(trx)).rows[0]
+  }
+  if (existante) return { id: existante.id, reference: existante.reference }
+
+  await trx
     .insertInto('declaration')
     .values({
+      id,
       entreprise_id: params.entrepriseId,
       site_id: params.siteId ?? null,
       reference: referenceCandidate,
@@ -91,25 +108,11 @@ export async function creerDeclaration(
       cle_client: params.cleClient ?? null,
       saisi_hors_ligne: params.saisiHorsLigne,
     })
-    .onConflict((oc) => oc.columns(['entreprise_id', 'cle_client']).doNothing())
-    .returning(['id', 'reference'])
-    .executeTakeFirst()
+    .execute()
 
-  // insere === undefined ne peut arriver QUE sur un vrai conflit (NULL ne
-  // "conflicte" jamais en SQL standard, donc uniquement possible si
-  // params.cleClient était renseigné) : on va chercher la ligne déjà là.
-  const inserted =
-    insere ??
-    (await trx
-      .selectFrom('declaration')
-      .select(['id', 'reference'])
-      .where('entreprise_id', '=', params.entrepriseId)
-      .where('cle_client', '=', params.cleClient!)
-      .executeTakeFirstOrThrow())
+  const inserted = { id, reference: referenceCandidate }
 
-  const etaitUneInsertion = insere !== undefined
-
-  if (etaitUneInsertion) {
+  {
     // journal_audit : jamais l'identité de l'appelant sur une déclaration
     // anonyme — sinon un administrateur recoupe "qui" a créé "quelle"
     // déclaration anonyme par horodatage, ce qui annule l'anonymat.
@@ -122,17 +125,7 @@ export async function creerDeclaration(
       details: null, // jamais de description/lieu ici (contrainte projet)
     })
 
-    await trx
-      .insertInto('historique_declaration')
-      .values({
-        entreprise_id: params.entrepriseId,
-        declaration_id: inserted.id,
-        utilisateur_id: params.anonyme ? null : params.utilisateurId,
-        statut_avant: null,
-        statut_apres: 'a_qualifier',
-        commentaire: null,
-      })
-      .execute()
+    // L'historique de création est écrit par le déclencheur trg_declaration_historique (0035).
 
     // Notification au(x) responsable(s) : contenu générique (référence,
     // rien d'autre) — jamais l'identité du déclarant, anonyme ou pas. Le

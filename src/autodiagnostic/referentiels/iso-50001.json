@@ -1,0 +1,255 @@
+{
+  "referentiel": "iso-50001",
+  "titre": "Management de l'énergie — ISO 50001",
+  "description": "Évaluez la maturité de votre système de management de l'énergie et votre capacité à réduire durablement vos consommations.",
+  "dureeEstimeeMinutes": 8,
+  "avertissement": "Diagnostic indicatif. Il ne remplace ni un audit énergétique ni un audit de certification.",
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place et documenté", "coefficient": 1 },
+    { "code": "partiel", "libelle": "Partiellement, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    {
+      "seuilMin": 0,
+      "seuilMax": 39,
+      "libelle": "Démarrage",
+      "message": "Votre consommation d'énergie n'est pas encore pilotée. C'est aussi une bonne nouvelle : les premières actions sont souvent les plus rentables, et les gains arrivent vite."
+    },
+    {
+      "seuilMin": 40,
+      "seuilMax": 59,
+      "libelle": "En construction",
+      "message": "Vous suivez vos consommations, mais sans démarche structurée. L'enjeu est maintenant de cibler les usages qui pèsent le plus et de mesurer les résultats."
+    },
+    {
+      "seuilMin": 60,
+      "seuilMax": 79,
+      "libelle": "Structuré",
+      "message": "Votre pilotage énergétique repose sur des bases sérieuses. Une démarche de certification est envisageable après traitement des écarts identifiés."
+    },
+    {
+      "seuilMin": 80,
+      "seuilMax": 100,
+      "libelle": "Avancé",
+      "message": "Votre système de management de l'énergie est mature. Un audit blanc permettrait de confirmer votre préparation à l'audit de certification."
+    }
+  ],
+  "themes": [
+    {
+      "code": "contexte",
+      "libelle": "Contexte et engagement de la direction",
+      "questions": [
+        {
+          "id": "ctx-1",
+          "texte": "Disposez-vous d'une politique énergétique écrite, signée par la direction ?",
+          "aide": "Un document court qui engage l'entreprise à améliorer sa performance énergétique et à y consacrer des moyens.",
+          "poids": 3,
+          "recommandation": "Rédiger une politique énergétique signée par la direction : sans engagement formel, la démarche s'essouffle au premier arbitrage budgétaire."
+        },
+        {
+          "id": "ctx-2",
+          "texte": "Le périmètre de votre démarche énergie est-il défini par écrit (sites, bâtiments, procédés concernés) ?",
+          "poids": 2,
+          "recommandation": "Délimiter clairement le périmètre : un périmètre flou empêche de mesurer le moindre progrès."
+        },
+        {
+          "id": "ctx-3",
+          "texte": "Une personne est-elle nommément responsable du suivi de l'énergie ?",
+          "aide": "Référent énergie, responsable technique, ou équipe dédiée selon la taille de l'entreprise.",
+          "poids": 3,
+          "recommandation": "Désigner un référent énergie : sans responsable identifié, personne ne regarde les factures autrement que pour les payer."
+        },
+        {
+          "id": "ctx-4",
+          "texte": "Un budget est-il alloué aux actions d'amélioration énergétique ?",
+          "poids": 2,
+          "recommandation": "Identifier une enveloppe dédiée, même modeste. Les actions les plus rentables se financent souvent par les économies de la première année."
+        }
+      ]
+    },
+    {
+      "code": "revue",
+      "libelle": "Revue énergétique et usages significatifs",
+      "questions": [
+        {
+          "id": "rev-1",
+          "texte": "Connaissez-vous la répartition de votre consommation d'énergie par usage ?",
+          "aide": "Production, froid, air comprimé, éclairage, climatisation, véhicules, groupes électrogènes.",
+          "poids": 4,
+          "recommandation": "Réaliser une revue énergétique : tant que vous ne savez pas où part l'énergie, toute action est un pari."
+        },
+        {
+          "id": "rev-2",
+          "texte": "Avez-vous identifié vos usages énergétiques significatifs, ceux qui pèsent le plus dans la facture ?",
+          "poids": 4,
+          "recommandation": "Identifier les usages significatifs et concentrer les moyens dessus : quelques postes représentent souvent l'essentiel de la consommation."
+        },
+        {
+          "id": "rev-3",
+          "texte": "Avez-vous établi une situation énergétique de référence, qui servira de base de comparaison ?",
+          "aide": "Une période de référence représentative, à laquelle comparer les consommations futures.",
+          "poids": 3,
+          "recommandation": "Définir une situation de référence : sans elle, impossible de prouver la moindre amélioration."
+        },
+        {
+          "id": "rev-4",
+          "texte": "Avez-vous recensé les opportunités d'amélioration de votre performance énergétique ?",
+          "poids": 3,
+          "recommandation": "Lister les opportunités et les classer par rentabilité et par facilité de mise en œuvre."
+        },
+        {
+          "id": "rev-5",
+          "texte": "Tenez-vous à jour les exigences légales applicables à votre consommation d'énergie ?",
+          "poids": 2,
+          "recommandation": "Assurer une veille réglementaire sur l'énergie, y compris les obligations liées aux groupes électrogènes et aux fluides frigorigènes."
+        }
+      ]
+    },
+    {
+      "code": "mesure",
+      "libelle": "Mesure et indicateurs",
+      "questions": [
+        {
+          "id": "mes-1",
+          "texte": "Relevez-vous vos consommations d'énergie à un rythme régulier ?",
+          "aide": "Relevés mensuels au minimum : électricité du réseau, carburant des groupes, gaz, carburant des véhicules.",
+          "poids": 4,
+          "recommandation": "Mettre en place un relevé mensuel systématique : c'est le point de départ, et il ne coûte rien."
+        },
+        {
+          "id": "mes-2",
+          "texte": "Disposez-vous de compteurs divisionnaires sur vos principaux postes de consommation ?",
+          "poids": 3,
+          "recommandation": "Installer des compteurs sur les usages significatifs : une facture globale ne permet pas de piloter."
+        },
+        {
+          "id": "mes-3",
+          "texte": "Avez-vous défini des indicateurs de performance énergétique adaptés à votre activité ?",
+          "aide": "Consommation par tonne produite, par m² chauffé ou climatisé, par nuitée, par kilomètre parcouru.",
+          "poids": 3,
+          "recommandation": "Rapporter la consommation à l'activité : la consommation brute augmente avec la production sans que la performance se dégrade."
+        },
+        {
+          "id": "mes-4",
+          "texte": "Comparez-vous vos consommations d'une période à l'autre, en tenant compte des variations d'activité et de climat ?",
+          "poids": 3,
+          "recommandation": "Analyser les écarts en neutralisant les effets d'activité et de saison, sinon les conclusions sont fausses."
+        },
+        {
+          "id": "mes-5",
+          "texte": "Les anomalies de consommation sont-elles détectées et expliquées ?",
+          "aide": "Une facture qui double sans raison, une consommation nocturne anormale, une dérive progressive.",
+          "poids": 3,
+          "recommandation": "Instaurer un contrôle mensuel des écarts : les fuites d'air comprimé et les équipements restés en marche se repèrent ainsi."
+        },
+        {
+          "id": "mes-6",
+          "texte": "Les appareils de mesure utilisés sont-ils fiables et vérifiés ?",
+          "poids": 2,
+          "recommandation": "Vérifier périodiquement les appareils de mesure : des données fausses conduisent à de mauvaises décisions."
+        }
+      ]
+    },
+    {
+      "code": "actions",
+      "libelle": "Plan d'action et maîtrise opérationnelle",
+      "questions": [
+        {
+          "id": "act-1",
+          "texte": "Avez-vous un plan d'action énergie avec des responsables, des échéances et des gains attendus ?",
+          "poids": 4,
+          "recommandation": "Formaliser un plan d'action chiffré : une liste d'idées sans responsable ni échéance ne produit aucune économie."
+        },
+        {
+          "id": "act-2",
+          "texte": "Des objectifs de réduction chiffrés ont-ils été fixés ?",
+          "poids": 3,
+          "recommandation": "Fixer des cibles chiffrées et datées, cohérentes avec la situation de référence."
+        },
+        {
+          "id": "act-3",
+          "texte": "Existe-t-il des consignes d'exploitation des équipements consommateurs ?",
+          "aide": "Températures de consigne, plages de fonctionnement, procédures d'arrêt en fin de poste.",
+          "poids": 3,
+          "recommandation": "Écrire les consignes d'exploitation et les afficher près des équipements : le réglage se perd sinon au premier changement d'équipe."
+        },
+        {
+          "id": "act-4",
+          "texte": "La maintenance des équipements énergivores est-elle planifiée et suivie ?",
+          "aide": "Nettoyage des condenseurs, chasse aux fuites d'air comprimé, entretien des groupes, purge des circuits.",
+          "poids": 3,
+          "recommandation": "Intégrer l'énergie au plan de maintenance : un équipement mal entretenu consomme davantage pour le même service."
+        },
+        {
+          "id": "act-5",
+          "texte": "Le critère énergétique intervient-il dans vos achats d'équipements ?",
+          "aide": "Coût global sur la durée de vie plutôt que prix d'achat seul.",
+          "poids": 2,
+          "recommandation": "Intégrer la consommation au critère de choix : un équipement moins cher à l'achat peut coûter bien plus sur dix ans."
+        },
+        {
+          "id": "act-6",
+          "texte": "Le critère énergétique est-il pris en compte dans la conception de vos nouvelles installations ?",
+          "poids": 2,
+          "recommandation": "Intervenir dès la conception : c'est le moment où l'amélioration coûte le moins cher."
+        }
+      ]
+    },
+    {
+      "code": "competences",
+      "libelle": "Compétences et sensibilisation",
+      "questions": [
+        {
+          "id": "cmp-1",
+          "texte": "Les personnes qui pilotent les équipements consommateurs ont-elles été formées aux bonnes pratiques énergétiques ?",
+          "poids": 3,
+          "recommandation": "Former les opérateurs : ce sont eux qui font varier la consommation au quotidien."
+        },
+        {
+          "id": "cmp-2",
+          "texte": "Les salariés sont-ils sensibilisés aux économies d'énergie ?",
+          "poids": 2,
+          "recommandation": "Communiquer régulièrement sur les résultats obtenus : les gains de comportement se maintiennent uniquement s'ils sont rendus visibles."
+        },
+        {
+          "id": "cmp-3",
+          "texte": "Les résultats énergétiques sont-ils communiqués aux équipes ?",
+          "poids": 2,
+          "recommandation": "Afficher l'évolution des indicateurs : un résultat partagé mobilise, un résultat confidentiel n'a aucun effet."
+        }
+      ]
+    },
+    {
+      "code": "evaluation",
+      "libelle": "Évaluation et amélioration",
+      "questions": [
+        {
+          "id": "eva-1",
+          "texte": "Vérifiez-vous que les actions réalisées ont produit les économies attendues ?",
+          "poids": 3,
+          "recommandation": "Mesurer le résultat réel de chaque action : c'est ce qui permet de justifier les investissements suivants."
+        },
+        {
+          "id": "eva-2",
+          "texte": "Réalisez-vous des audits internes sur votre démarche énergie ?",
+          "poids": 3,
+          "recommandation": "Programmer un audit interne annuel : il est exigé par la norme et prépare l'audit de certification."
+        },
+        {
+          "id": "eva-3",
+          "texte": "La direction passe-t-elle en revue les résultats énergétiques au moins une fois par an ?",
+          "poids": 3,
+          "recommandation": "Instaurer une revue de direction annuelle, avec décisions tracées et moyens alloués."
+        },
+        {
+          "id": "eva-4",
+          "texte": "Les écarts et dérives constatés donnent-ils lieu à des actions correctives suivies ?",
+          "poids": 3,
+          "recommandation": "Traiter les dérives dès leur détection : une consommation qui dérive sans réaction devient la nouvelle normale."
+        }
+      ]
+    }
+  ]
+}

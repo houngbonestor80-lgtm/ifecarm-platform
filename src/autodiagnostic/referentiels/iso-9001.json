@@ -1,0 +1,85 @@
+{
+  "referentiel": "iso-9001",
+  "titre": "Management de la qualité — ISO 9001",
+  "description": "Évaluez la maturité de votre système de management de la qualité et votre capacité à livrer une prestation régulière.",
+  "dureeEstimeeMinutes": 8,
+  "avertissement": "Diagnostic indicatif. Il ne remplace ni un audit de conformité ni un audit de certification.",
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place et documenté", "coefficient": 1 },
+    { "code": "partiel", "libelle": "Partiellement, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    { "seuilMin": 0, "seuilMax": 39, "libelle": "Démarrage", "message": "Votre organisation fonctionne aujourd'hui sur les compétences des personnes plutôt que sur des processus établis. C'est fréquent et ce n'est pas un défaut de qualité : c'est un risque de dépendance." },
+    { "seuilMin": 40, "seuilMax": 59, "libelle": "En construction", "message": "Des pratiques existent mais restent peu formalisées. Le travail consiste à les décrire, les harmoniser et les rendre indépendantes des personnes." },
+    { "seuilMin": 60, "seuilMax": 79, "libelle": "Structuré", "message": "Votre système qualité repose sur des bases sérieuses. Une démarche de certification est envisageable après traitement des écarts identifiés." },
+    { "seuilMin": 80, "seuilMax": 100, "libelle": "Avancé", "message": "Votre système est mature. Un audit blanc permettrait de confirmer votre préparation à l'audit de certification." }
+  ],
+  "themes": [
+    {
+      "code": "contexte",
+      "libelle": "Contexte et leadership",
+      "questions": [
+        { "id": "ctx-1", "texte": "Avez-vous identifié par écrit les enjeux internes et externes qui influencent votre activité ?", "aide": "Concurrence, dépendance à un client majeur, disponibilité des compétences, contexte réglementaire.", "poids": 2, "recommandation": "Formaliser une analyse du contexte : c'est le point de départ exigé par la norme." },
+        { "id": "ctx-2", "texte": "Avez-vous recensé vos parties intéressées et leurs attentes ?", "aide": "Clients, salariés, fournisseurs, banques, administration, actionnaires.", "poids": 2, "recommandation": "Lister les parties intéressées et leurs exigences, puis les revoir une fois par an." },
+        { "id": "ctx-3", "texte": "Disposez-vous d'une politique qualité écrite, signée par la direction et communiquée aux équipes ?", "poids": 3, "recommandation": "Rédiger une politique qualité signée, l'afficher et la présenter aux équipes." },
+        { "id": "ctx-4", "texte": "Les rôles et responsabilités de chacun sont-ils définis par écrit ?", "aide": "Organigramme, fiches de poste, délégations.", "poids": 3, "recommandation": "Formaliser l'organigramme et les fiches de poste : c'est la première chose que demande un auditeur." },
+        { "id": "ctx-5", "texte": "Avez-vous fixé des objectifs qualité mesurables, avec échéances et responsables ?", "poids": 3, "recommandation": "Traduire la politique en objectifs chiffrés et datés, sinon elle reste déclarative." }
+      ]
+    },
+    {
+      "code": "processus",
+      "libelle": "Processus et documentation",
+      "questions": [
+        { "id": "pro-1", "texte": "Vos processus principaux sont-ils identifiés et décrits ?", "aide": "De la demande du client jusqu'à la livraison et au service après-vente.", "poids": 4, "recommandation": "Cartographier vos processus : c'est le socle de tout le système qualité." },
+        { "id": "pro-2", "texte": "Les procédures et modes opératoires essentiels sont-ils écrits et accessibles aux équipes ?", "poids": 3, "recommandation": "Documenter les activités critiques : une procédure qui n'existe que dans la tête d'une personne disparaît avec elle." },
+        { "id": "pro-3", "texte": "Maîtrisez-vous les versions de vos documents (qui valide, qui diffuse, quelle version fait foi) ?", "poids": 3, "recommandation": "Mettre en place une gestion documentaire simple : une procédure obsolète en circulation est pire qu'une absence de procédure." },
+        { "id": "pro-4", "texte": "Conservez-vous les enregistrements qui prouvent la conformité de vos prestations ?", "aide": "Bons de livraison, rapports de contrôle, comptes rendus, validations client.", "poids": 3, "recommandation": "Organiser la conservation des enregistrements : sans preuve, la conformité ne se démontre pas." },
+        { "id": "pro-5", "texte": "Les risques et opportunités liés à vos processus sont-ils identifiés et traités ?", "poids": 3, "recommandation": "Identifier les risques par processus et prévoir les actions associées." }
+      ]
+    },
+    {
+      "code": "clients",
+      "libelle": "Clients et satisfaction",
+      "questions": [
+        { "id": "cli-1", "texte": "Les exigences du client sont-elles formalisées avant le démarrage d'une prestation ?", "aide": "Devis détaillé, cahier des charges, contrat, bon de commande signé.", "poids": 4, "recommandation": "Formaliser les exigences avant tout démarrage : la majorité des litiges naissent d'un accord verbal imprécis." },
+        { "id": "cli-2", "texte": "Vérifiez-vous votre capacité à répondre avant d'accepter une commande ?", "aide": "Disponibilité des ressources, délais réalistes, compétences requises.", "poids": 3, "recommandation": "Instaurer une revue de commande, même courte : accepter une commande intenable coûte plus cher que la refuser." },
+        { "id": "cli-3", "texte": "Mesurez-vous la satisfaction de vos clients ?", "poids": 3, "recommandation": "Mettre en place une mesure régulière de la satisfaction, même simple : un appel après livraison vaut mieux qu'aucune mesure." },
+        { "id": "cli-4", "texte": "Les réclamations clients sont-elles enregistrées et traitées de façon systématique ?", "poids": 4, "recommandation": "Tenir un registre des réclamations avec le traitement associé : c'est la source d'amélioration la plus riche et la moins coûteuse." }
+      ]
+    },
+    {
+      "code": "ressources",
+      "libelle": "Ressources et compétences",
+      "questions": [
+        { "id": "res-1", "texte": "Les compétences nécessaires à chaque poste sont-elles définies ?", "poids": 3, "recommandation": "Décrire les compétences requises par poste : c'est la base du plan de formation et du recrutement." },
+        { "id": "res-2", "texte": "Disposez-vous d'un plan de formation, et conservez-vous la trace des formations suivies ?", "poids": 3, "recommandation": "Formaliser le plan de formation et archiver les attestations." },
+        { "id": "res-3", "texte": "Les nouveaux arrivants bénéficient-ils d'un parcours d'intégration structuré ?", "poids": 2, "recommandation": "Mettre en place un parcours d'intégration : il réduit les erreurs des premières semaines." },
+        { "id": "res-4", "texte": "Vos équipements de mesure et de contrôle sont-ils vérifiés ou étalonnés périodiquement ?", "poids": 3, "recommandation": "Assurer le suivi métrologique des équipements de contrôle : un instrument faux invalide tous les résultats qu'il produit." },
+        { "id": "res-5", "texte": "L'infrastructure nécessaire à votre activité est-elle entretenue selon un plan défini ?", "aide": "Locaux, machines, véhicules, matériel informatique.", "poids": 2, "recommandation": "Planifier la maintenance préventive plutôt que de réparer dans l'urgence." }
+      ]
+    },
+    {
+      "code": "realisation",
+      "libelle": "Réalisation et fournisseurs",
+      "questions": [
+        { "id": "rea-1", "texte": "Vos fournisseurs et sous-traitants sont-ils évalués et sélectionnés selon des critères définis ?", "poids": 3, "recommandation": "Établir des critères de sélection et évaluer périodiquement vos fournisseurs : leurs défaillances deviennent les vôtres." },
+        { "id": "rea-2", "texte": "Les produits ou services achetés sont-ils contrôlés à réception ?", "poids": 3, "recommandation": "Définir un contrôle à réception proportionné au risque." },
+        { "id": "rea-3", "texte": "Des contrôles sont-ils réalisés en cours et en fin de réalisation ?", "poids": 3, "recommandation": "Prévoir des points de contrôle aux étapes clés, plutôt qu'un contrôle final unique." },
+        { "id": "rea-4", "texte": "Les produits ou prestations non conformes sont-ils identifiés, isolés et traités ?", "poids": 3, "recommandation": "Formaliser le traitement des non-conformités, avec décision tracée : réparation, rebut, dérogation." },
+        { "id": "rea-5", "texte": "Pouvez-vous retrouver l'historique d'une commande ou d'un lot en cas de problème ?", "poids": 2, "recommandation": "Assurer la traçabilité de vos prestations : elle devient indispensable dès la première réclamation sérieuse." }
+      ]
+    },
+    {
+      "code": "amelioration",
+      "libelle": "Évaluation et amélioration",
+      "questions": [
+        { "id": "ame-1", "texte": "Suivez-vous des indicateurs de performance dans le temps ?", "aide": "Taux de respect des délais, taux de non-conformité, satisfaction client, réclamations.", "poids": 3, "recommandation": "Suivre quelques indicateurs simples et les présenter à la direction." },
+        { "id": "ame-2", "texte": "Réalisez-vous des audits internes ?", "poids": 3, "recommandation": "Programmer des audits internes annuels : ils sont exigés par la norme et préparent l'audit de certification." },
+        { "id": "ame-3", "texte": "La direction passe-t-elle en revue le système qualité au moins une fois par an ?", "poids": 3, "recommandation": "Instaurer une revue de direction annuelle, avec compte rendu et décisions tracées." },
+        { "id": "ame-4", "texte": "Les problèmes récurrents font-ils l'objet d'une analyse des causes et d'actions correctives suivies ?", "poids": 4, "recommandation": "Analyser les causes profondes plutôt que de corriger les symptômes : c'est ce qui distingue un système qui progresse d'un système qui répare." }
+      ]
+    }
+  ]
+}

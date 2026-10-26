@@ -1,7 +1,7 @@
 import type { Transaction } from 'kysely'
 import type { DB } from '@/db/types.generated'
 
-export type Module = 'formations' | 'incidents' | 'habilitations' | 'inspections' | 'tableau_bord'
+export type Module = 'formations' | 'incidents' | 'habilitations' | 'inspections' | 'tableau_bord' | 'autodiagnostic'
 
 /**
  * Utilitaire d'activation de module (revue de sécurité, "Gestion des

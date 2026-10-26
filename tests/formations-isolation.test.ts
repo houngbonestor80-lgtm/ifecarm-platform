@@ -159,9 +159,12 @@ describe('Attestation — données figées à l’émission', () => {
     )
 
     await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, async (trx) => {
-      await trx.updateTable('formation').set({ intitule: 'Intitulé changé après coup' }).where('id', '=', ff.formationA).execute()
       await trx.updateTable('salarie').set({ nom: 'NomChangéAprèsCoup' }).where('id', '=', f.salarieA1).execute()
     })
+
+    // L'intitulé de la formation est modifié par l'équipe IFECARM : le client est en consultation seule (0029).
+    await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
+      trx.updateTable('formation').set({ intitule: 'Intitulé changé après coup' }).where('id', '=', ff.formationA).execute())
 
     const apres = await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
       trx

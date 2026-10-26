@@ -1,0 +1,16 @@
+[
+  { "code": "HAB-ELEC", "intitule": "Habilitation électrique", "domaine": "electrique", "referentiel": "NF C 18-510", "validite_mois": 36 },
+  { "code": "SST", "intitule": "Sauveteur secouriste du travail", "domaine": "secourisme", "referentiel": "INRS", "validite_mois": 24 },
+  { "code": "CACES-R482", "intitule": "CACES R482 — Engins de chantier", "domaine": "conduite_levage", "referentiel": "CACES R482", "validite_mois": 120 },
+  { "code": "CACES-R483", "intitule": "CACES R483 — Grues mobiles", "domaine": "conduite_levage", "referentiel": "CACES R483", "validite_mois": 60 },
+  { "code": "CACES-R484", "intitule": "CACES R484 — Ponts roulants et portiques", "domaine": "conduite_levage", "referentiel": "CACES R484", "validite_mois": 60 },
+  { "code": "CACES-R485", "intitule": "CACES R485 — Chariots à conducteur accompagnant", "domaine": "conduite_levage", "referentiel": "CACES R485", "validite_mois": 60 },
+  { "code": "CACES-R486", "intitule": "CACES R486 — Plateformes élévatrices mobiles de personnes (PEMP)", "domaine": "conduite_levage", "referentiel": "CACES R486", "validite_mois": 60 },
+  { "code": "CACES-R487", "intitule": "CACES R487 — Grues à tour", "domaine": "conduite_levage", "referentiel": "CACES R487", "validite_mois": 60 },
+  { "code": "CACES-R489", "intitule": "CACES R489 — Chariots élévateurs à conducteur porté", "domaine": "conduite_levage", "referentiel": "CACES R489", "validite_mois": 60 },
+  { "code": "CACES-R490", "intitule": "CACES R490 — Grues de chargement", "domaine": "conduite_levage", "referentiel": "CACES R490", "validite_mois": 60 },
+  { "code": "AUT-CONDUITE", "intitule": "Autorisation de conduite (employeur)", "domaine": "conduite_levage", "referentiel": "Code du travail R.4323-56", "validite_mois": null },
+  { "code": "HAUTEUR", "intitule": "Travail en hauteur, port du harnais", "domaine": "hauteur", "referentiel": "Recommandation", "validite_mois": 12 },
+  { "code": "ECHAF", "intitule": "Montage et utilisation d’échafaudages", "domaine": "hauteur", "referentiel": "R408", "validite_mois": 36 },
+  { "code": "INCENDIE-EPI", "intitule": "Équipier de première intervention", "domaine": "incendie", "referentiel": null, "validite_mois": 12 }
+]

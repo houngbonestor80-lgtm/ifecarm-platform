@@ -50,7 +50,7 @@ const valeursAttestation = (code: string) =>
 describe('attestation ↔ participant : même entreprise (migration 0006)', () => {
   it("l'application (ifecarm_app, RLS satisfaite) ne peut pas rattacher une attestation de A à un participant de B", async () => {
     await expect(
-      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
+      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
         trx
           .insertInto('attestation')
           .values({
@@ -89,12 +89,14 @@ describe('attestation ↔ participant : même entreprise (migration 0006)', () =
       // par (attestation_id, entreprise_id) : selon l'ordre de vérification,
       // c'est l'une ou l'autre des deux clés composites qui refuse. Dans les
       // deux cas la base rejette le déplacement.
+      // Depuis 0029, le trigger « attestation figée » (entreprise_id fait partie
+      // des colonnes figées) refuse aussi le déplacement avant les clés composites.
       await expect(
         client.query('UPDATE attestation SET entreprise_id = $1 WHERE id = $2', [f.entrepriseB, ff.attestationA]),
       ).rejects.toSatisfy(
-        (e: { code?: string, constraint?: string }) =>
-          e.code === '23503' &&
-          [CONTRAINTE, 'alerte_recyclage_attestation_meme_entreprise_fkey'].includes(e.constraint ?? ''),
+        (e: { code?: string, constraint?: string, message?: string }) =>
+          (e.code === '23503' && [CONTRAINTE, 'alerte_recyclage_attestation_meme_entreprise_fkey'].includes(e.constraint ?? '')) ||
+          (e.code === 'IF409' && /figée/.test(e.message ?? '')),
       )
     } finally {
       await client.end()
@@ -103,7 +105,7 @@ describe('attestation ↔ participant : même entreprise (migration 0006)', () =
 
   it('cas nominal : une attestation de A sur un participant de A est acceptée', async () => {
     const code = `T0006-${randomUUID()}`
-    const cree = await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
+    const cree = await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
       trx
         .insertInto('attestation')
         .values({

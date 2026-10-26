@@ -17,26 +17,27 @@ services:
       timeout: 3s
       retries: 15
 
-  minio:
-    # MinIO a arrêté de publier sur Docker Hub (minio/minio) ; quay.io est
-    # désormais leur registre à jour. Tag de version précis, pas `:latest` —
-    # `:latest` n'est pas résolu de façon fiable sur quay.io (401 constaté).
-    image: quay.io/minio/minio:RELEASE.2025-09-06T17-38-46Z
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: ifecarm_dev
-      MINIO_ROOT_PASSWORD: ifecarm_dev_password
+  stockage:
+    # Stockage objet compatible S3 pour le DÉVELOPPEMENT uniquement (la
+    # production utilise un vrai S3 via S3_REGION). MinIO a retiré ses images
+    # publiques (quay.io : 401, Docker Hub : dépôt supprimé, constaté le
+    # 29/09/2026) : remplacé par SeaweedFS, libre (Apache 2.0). Même API S3,
+    # même port 9000 : .env et src/storage/s3.ts sont inchangés. Sans fichier
+    # d'identités, SeaweedFS accepte toute clé (acceptable en local seulement).
+    image: chrislusf/seaweedfs:latest
+    command: server -dir=/data -s3 -s3.port=9000 -ip.bind=0.0.0.0
     ports:
       - '9000:9000' # API S3
-      - '9001:9001' # console web
     volumes:
-      - miniodata:/data
-    healthcheck:
-      test: ['CMD', 'mc', 'ready', 'local']
-      interval: 2s
-      timeout: 3s
-      retries: 15
+      - stockagedata:/data
+
+  courriel:
+    # Boîte mail de DÉVELOPPEMENT : reçoit les e-mails sans rien envoyer (SMTP 1025, interface http://localhost:8025).
+    image: axllent/mailpit:latest
+    ports:
+      - '1025:1025' # SMTP
+      - '8025:8025' # interface web
 
 volumes:
   pgdata:
-  miniodata:
+  stockagedata:

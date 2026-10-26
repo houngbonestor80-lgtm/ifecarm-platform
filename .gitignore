@@ -5,3 +5,4 @@ node_modules/
 npm-debug.log*
 src/db/types.generated.ts
 *.tsbuildinfo
+.gstack/

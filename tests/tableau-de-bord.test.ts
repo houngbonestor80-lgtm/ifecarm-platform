@@ -66,7 +66,7 @@ describe('Vues client (security_invoker) — cloisonnées par la RLS des tables 
   })
 
   it("une non-conformité traitée (action réalisée) n'est plus comptée comme ouverte", async () => {
-    await withTenant(tenantA(), (trx) =>
+    await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) => // écriture réservée à l'équipe IFECARM (0035)
       trx
         .updateTable('action_corrective')
         .set({ statut: 'realisee', realisee_le: new Date() })

@@ -19,7 +19,7 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 
 - Next.js 16 (App Router, Turbopack) + TypeScript. Lire `node_modules/next/dist/docs/` avant de coder (voir AGENTS.md).
 - PostgreSQL 15+, Row Level Security
-- Kysely + migrations SQL brutes dans `migrations/` (dernière : `0027_notes_suivi.sql`), jouées par `npm run migrate`. Types : `npm run codegen`. Pas de Prisma (incompatible avec `SET LOCAL` sur le pool).
+- Kysely + migrations SQL brutes dans `migrations/` (dernière : `0051_souhaits_libres.sql`), jouées par `npm run migrate`. Types : `npm run codegen`. Pas de Prisma (incompatible avec `SET LOCAL` sur le pool).
 - Sessions maison (pas de fournisseur d'auth externe)
 - Stockage fichiers S3, SeaweedFS en local (port 9000, bucket `ifecarm-platform-dev`). Région du bucket configurable (non arbitrée : UE ou Afrique de l'Ouest).
 - Local via Docker : `npm run db:up` (Postgres + stockage). Tests : `npm test` (vitest, vraie base). Types : `npx tsc --noEmit`.
@@ -38,19 +38,20 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 | Module | Contenu | État |
 |---|---|---|
 | Socle | comptes, entreprises, sites, salariés, équipements, rôles, notifications, fichiers, journal d'audit | fait |
-| Auth | connexion, sessions, sélecteur d'entreprise, mot de passe changeable (`/mon-compte`) | fait (2FA et réinitialisation par email : non branchés) |
-| B1 | autodiagnostic | prévu |
-| B2 | formations : sessions, participants, émargement, attestations avec QR code | SQL fait, pas d'écrans |
-| B3 | registre de sécurité : déclarations (anonymat possible), hors ligne via IndexedDB | SQL fait, pas d'écrans |
-| B4 | habilitations | SQL fait, pas d'écrans |
+| Auth | connexion, sessions, sélecteur d'entreprise, mot de passe changeable (`/mon-compte`) | 2FA (TOTP) et mot de passe oublié faits 07/10/2026 (0045 + écrans `/connexion/2fa`, `/mot-de-passe-oublie`, `/reinitialiser`, section « Double authentification » de `/mon-compte`, bouton « Réinitialiser la 2FA » dans `/administration`), à tester en local |
+| B1 | autodiagnostic : migration 0047 (+0049), services, routes, écrans, rapport PDF, historique et comparaison, plan d'action depuis les écarts, volet du tableau de bord, éditeur de référentiels admin (`/administration/autodiagnostic`) faits 08/10/2026 ; écrans : `/autodiagnostic` (liste, nouvelle évaluation), `/autodiagnostic/[id]` (conduite sur tablette, résultat) ; 5 référentiels ISO du site IMPORTÉS (`npm run import:autodiagnostic`) ; module activé sur « Entreprise Démo » | fait 08/10/2026, à tester en local |
+| B2 | formations : sessions, participants (`/formations`), catalogue admin (`/administration/catalogue`, `npm run import:catalogue`) ; émargement par demi-journée et attestations (PDF + QR, page publique `/verifier/[code]`) faits 06/10/2026, à tester en local ; alertes de recyclage 90/30/7 jours puis échéance (jalon 0) faites 07/10/2026 (`alerter_recyclages()`, 0044 + 0046, lancée par `npm run relances`) | en cours |
+| B3 | registre de sécurité (module `incidents` ; incidents/accidents, pas les équipements) : saisie rapide hors ligne (`/registre/nouvelle`, IndexedDB + service worker `public/sw.js`), liste, qualification, analyse des causes, actions, relances (`npm run relances`), historique, photos (`/registre/[id]`), volet du tableau de bord | fait 06/10/2026, à tester en local ; reste : envoi réel des e-mails de relance (fournisseur à choisir) |
+| B4 | habilitations : matrice (`/habilitations`), fiche salarié avec titres, historique, renouvellement, justificatif (`/habilitations/salaries/[id]`), catalogue admin (`/administration/habilitations`), volet du tableau de bord, alertes 90/30/7 jours/échéance (`alerter_habilitations()`, lancée par `npm run relances`) ; catalogue IFECARM de 14 types IMPORTÉ le 07/10/2026 (`npm run import:habilitations`, rejouable ; HAUTEUR 12 mois, ECHAF 36, INCENDIE-EPI 12) | fait 07/10/2026, à tester en local |
 | B5 | inspections : checklist, photos, non-conformités, plans d'action, rapport PDF, suppression/annulation, intervenants | fait |
 | B6 | tableau de bord par entreprise (`/tableau-de-bord`) + Vue d'ensemble commune consultant/admin (`/vue-ensemble`) | fait |
-| Équipements | registre des équipements et EPI, échéances de vérification (`/equipements`) | fait |
+| Équipements | registre des équipements et EPI, échéances de vérification (`/equipements`), photos par équipement (`fichier`, objet_type `equipement`, 10 max, écriture consultant, `/api/equipements/[id]/photos`) reprises en vignettes (4 max) dans le rapport PDF du registre (`/api/equipements/rapport`, bouton « Rapport PDF », 07/10/2026, mise en page non vérifiée à l'œil) | fait |
 | Modèles | catalogue IFECARM (admin) + modèles par entreprise (consultant) (`/modeles`) | fait |
 | Accès | comptes des personnes du client, mot de passe provisoire (`/acces`) | fait |
 | Administration | création de client, modules, accès des consultants (`/administration`) | fait |
 | Pays | pays d'intervention, gérés en base (`/pays`) | fait |
-| Suivi | notes internes par entreprise, jamais visibles du client (`/suivi`) | fait |
+| Notes internes | bloc « Notes internes » sur inspection, action, session de formation, équipement, déclaration (`note_objet`, `src/ui/NotesInternes.tsx`), équipe IFECARM seulement | fait 06/10/2026 |
+| Suivi | notes internes et demandes de formation (participants, date, note) par entreprise, jamais visibles du client (`/suivi`) | fait |
 
 ## Règles de sécurité — à ne jamais casser
 
@@ -69,43 +70,65 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 - **Client et prospect : consultation seule**, même rôle. Seule écriture : changer son propre mot de passe.
 - **Consultant** : ses mandats (`acces_consultant`), inspections, équipements, comptes d'accès, modèles de l'entreprise, notes de suivi, création de prospect, ajout d'un pays.
 - **Admin (`admin_plateforme`)** : accès à tout, en écriture, sans mandat (`entreprise_accessible_admin()`), sauf l'entreprise interne IFECARM GROUP.
-- Réservé à l'admin : supprimer un client, catalogue de modèles, créer un client, modules, accès des consultants, convertir prospect → client, renommer/archiver/supprimer un pays.
+- Réservé à l’admin : supprimer un client, supprimer un compte consultant (`0033`, email à ressaisir), réinitialiser son mot de passe (provisoire affiché une fois ; l’ancien n’est jamais lisible), catalogue de modèles, créer un client, modules, accès des consultants, convertir prospect → client, renommer/archiver/supprimer un pays.
 - Les rôles `consultant_ifecarm` et `admin_plateforme` sont impossibles hors entreprise interne (trigger `0017`).
 
 ## Décisions prises
 
 - Écriture sur `acces_consultant` réservée à `platform_admin` (via `/administration`).
 - Une attestation hérite toujours de l'entreprise du client, jamais d'IFECARM (FK composite sur `attestation.entreprise_id`).
+- B4 (0043) : écriture = équipe IFECARM ; lecture = équipe, admin d'entreprise, responsable QHSE, responsable de site (salariés de son site) ; aucun autre utilisateur du client ; aucune échappatoire platform_admin sur `habilitation` ni sur ses fichiers (justificatif suit la visibilité de l'habilitation). Une ligne = un titre ; renouveler = nouvelle ligne + ancien titre `remplacee` dans la même transaction (contrôlé à la validation) ; `retiree` et `remplacee` définitifs ; salarié/type/création figés ; état (valide/à renouveler/expirée) CALCULÉ, jamais stocké. Attestation B2 liée facultativement (même salarié, valide), validité reprise à la saisie. Catalogue géré par l'admin (`gerer_catalogue_habilitation`).
+- B4 écrans : le responsable de site ne voit dans la matrice que les salariés de SON site (la liste des salariés est lisible de tout le tenant par la RLS de `salarie`, donc filtrée côté service). Le volet du tableau de bord (`/api/habilitations/resume`) est réservé aux responsables d'entreprise et à l'équipe.
+- Relances d'actions en retard (`0041`) : fonction SQL idempotente `relancer_actions_en_retard()` (jalons J-7, échéance, J+7, J+30 ; le jalon le plus avancé seulement), lancée chaque jour par `npm run relances` (Planificateur de tâches / cron) ; met les e-mails en file (`notification`, en_attente) — AUCUN envoi tant que le fournisseur d'e-mail n'est pas choisi. Notes internes sur les objets (`0042`, table `note_objet`) : équipe IFECARM seulement, jamais le client ; immuables ; suppression par l'auteur ou l'admin.
+- Annuler une attestation = la supprimer définitivement (`0034`, DELETE accordé ; remplace « l'attestation reste en base ») : elle disparaît, son QR n'est plus vérifiable, le participant redevient éligible ; trace du motif dans `journal_audit` seulement.
+- B3 (0035) : le client DÉCLARE seulement (exception à « consultation seule », limitée à l'insertion) ; qualification, analyse, actions, vérification, commentaires = équipe IFECARM. Lecture par rôle : IFECARM, responsable_qhse, admin_entreprise voient tout ; un déclarant ne lit que ses déclarations non anonymes (même l'auteur d'une anonyme ne la relit pas). Faits figés dès la qualification ; anonymat/référence/déclarant jamais modifiables ; cloturee et sans_suite définitifs ; historique des statuts écrit par déclencheur ; qualifieur posé par le serveur. Actions d'origine déclaration invisibles du déclarant ; actions d'inspection (B5) restent visibles du client. Responsable de site (`0037`, `0040`) : lit les déclarations, analyses et actions d'origine déclaration NON anonymes de son site (pas l'historique ni les relances). Photos de déclaration (`0038`) : `fichier` suit la visibilité de la déclaration, `televerse_par` NULL, pas de journal. Piège : `INSERT ... ON CONFLICT` et `RETURNING` exigent le droit de LIRE la ligne insérée (rejeu hors ligne via `chercher_declaration_par_cle`).
 - Prospects : `entreprise.statut_relation` (pas de second concept de tenant) ; `creer_prospect()` permet à un consultant d'ouvrir une inspection sur site. Plus de délai d'accès (`0024`). Plafond 50 prospects actifs par consultant. Conversion prospect → client gratuite, historique conservé.
-- Prospect : service souhaité (inspection, formation, audit, conseil) + formations du catalogue du site (`src/formations/catalogue.json`, copie à régénérer si le catalogue du site change).
+- Prospect : service souhaité (inspection, formation, audit, conseil) + formations du catalogue du site (`src/formations/catalogue.json`).
+- Catalogue du site (08/10/2026, option B) : `npm run catalogue:synchroniser` compare la copie à `../ifecarm/app/data/formations.light.json` (ou `SITE_VITRINE_DIR`), `-- --ecrire` la met à jour, `-- --ecrire --importer` met aussi à jour la table `formation`. Seuls titre, durée et famille (français) sont repris ; rien n'est supprimé en base. Le site n'a pas de base pour son catalogue (fichiers de code). Option C (le site publie un JSON) possible plus tard ; option D (objectifs, programme) non faite.
 - **Suppression définitive autorisée** (revient sur l'ancienne règle « désactivation seule ») : `supprimer_entreprise()` (prospect par consultant en écriture, client par admin, nom à retaper), `purger_inspection_annulee()`. Inspection : suppression directe si non clôturée et sans NC, sinon annulation puis purge.
 - `journal_audit` reste immuable ; seule exception (`0015`) : `entreprise_id` / `utilisateur_id` passent à NULL quand l'entité est supprimée.
 - Plans d'action B5 : réutiliser `action_corrective`, pas de nouvelle table `plan_action`. Seul le consultant fait avancer leur statut.
 - B6 : vues `security_invoker` pour les clients ; fonctions `SECURITY DEFINER` en comptages purs pour IFECARM (`indicateurs_plateforme()`, `resume_plateforme()`, `vue_ensemble_ifecarm()`).
 - Notes de suivi : RLS réservée aux consultants/admin, jamais visibles du client.
+- Durées et horaires décidés par le consultant/admin (05/10/2026) : inspection = jour + heure de début/fin (`0030`) ; session de formation = heures de début/fin et `duree_heures` propres à la session ; la durée du catalogue du site n’est qu’indicative (`formation.duree_jours` facultative, texte du site dans `duree_libelle`). B2 : RLS d’écriture réservée à l’équipe IFECARM (`0029`).
 - Email **globalement unique** ; une personne = une identité, accès aux autres tenants via `acces_consultant`. Recherche à la connexion par fonction `SECURITY DEFINER`.
 - Mot de passe provisoire affiché une seule fois à la création d'un compte ; hash argon2id seulement en base.
+- PDF (rapport d'inspection, attestation) : charte graphique IFECARM v1.0 (`Téléchargements/IFECARM_Charte_Graphique_Complete.pdf`, §2.2, §3, §4 p. 16). Poppins seule (Montserrat interdite pour titres et textes longs), noir #1A1A1A, un seul vert, pas de slogan ajouté ; rapport = couverture LOGO-01 (`assets/pdf/logo-prestige.png`) + en-tête technique `INS-AAAA-xxxxxxxx · Page n / N` + pied légal en page 1 seulement ; attestation = « Certificat de formation » reprenant les proportions du modèle p. 16 (fond ivoire, cadre à coins arrondis, logo horizontal centré, Montserrat Regular pour titre, libellés et pied, Poppins pour le corps), code de vérification à la place du N° séquentiel.
 - Photos d'inspection : passent par le serveur (pas d'URL présignée), magic bytes JPEG/PNG/WebP, 8 Mo et 10 par objet, ré-encodées par canvas côté navigateur.
 - B3 : référence séquentielle par entreprise via compteur verrouillé (pas de `max()+1`) ; photos ré-encodées par canvas (EXIF supprimé, orientation appliquée) ; `navigator.storage.persist()` demandé.
 
+- 2FA (0045) : obligatoire pour consultant, admin_plateforme, admin_entreprise, responsable_qhse ; facultative pour les autres. La session naît PARTIELLE (`a2f_requise`) et n'est libérée que par la saisie du code ; `validerSession` refuse les sessions partielles, `validerSessionPartielle` sert aux routes 2FA. Secret TOTP chiffré AES-256-GCM (`TOTP_ENCRYPTION_KEY`, 32 octets base64), anti-rejeu par `totp_dernier_pas`, 10 codes de secours hachés en HMAC, appareil de confiance 30 jours (cookie `ifecarm_appareil`, hash en base, révocable), 5 échecs = session révoquée. Réinitialisation de la 2FA par l'admin seulement (`reinitialiser_2fa_utilisateur`, journalisée, jamais pour soi-même). Mot de passe oublié : réponse toujours identique, lien 60 min à usage unique (hash en base), 3/h par compte et 10/h par IP ; révoque sessions et appareils, ne touche pas à la 2FA.
+- B1 (0047) : le consultant conduit l'évaluation, le client (admin d'entreprise, responsable QHSE) lit les TERMINÉES seulement ; aucun autre rôle du client. Catalogue `referentiel_autodiagnostic` lu par l'équipe, écrit par l'admin (`gerer_catalogue_autodiagnostic`), `definition` jsonb validée en base. Évaluation = questionnaire COPIÉ à la création (déclencheur), résultat calculé EN BASE par `terminer_autodiagnostic()` (même formule que le site, comparée dans les tests), toutes les questions répondues, terminée = définitive, suppression d'une terminée = admin seulement et jamais si des actions en dépendent. Actions issues des écarts : `action_corrective` origine `audit` + lien `autodiagnostic_action` ; vue `v_autodiagnostic_dernier` (dernier score et précédent) pour le tableau de bord. Module `autodiagnostic` ajouté à `abonnement_module`.
+- Principe (décision de l'utilisateur 08/10/2026) : le consultant et l'admin ne sont JAMAIS limités aux listes par défaut ; partout où l'on choisit dans une liste, il doit pouvoir écrire sa propre valeur. Déjà fait : site (`ChoixSite`), checklist d'inspection libre, points ajoutés en cours d'inspection, formation hors catalogue, type d'habilitation écrit, équipement (type en saisie libre), participants non connus. Audit complet fait le 26/10/2026 (0051) : s'ajoutent équipement écrit à l'inspection, « autre service » et formation hors catalogue d'un prospect (`entreprise.service_autre`, `demande_formation.intitule`, slug `libre-…`, planifiable avec une formation sur mesure). Pas faits, à décider : autodiagnostic libre pour le consultant, création de site depuis une déclaration. À vérifier à chaque nouvel écran. Restent volontairement fermés (échelles métier) : gravité, nature de mesure, type de déclaration, rôles.
+- Checklist libre (0048) : `inspection.modele_id` facultatif ; points écrits par l'inspecteur = `item_inspection.personnalise` ; ajout / reformulation / suppression seulement tant que l'inspection est ouverte (déclencheur), jamais pour un point issu d'un modèle (figé, « non applicable » existe) ni portant une non-conformité ; 200 points max ; option « garder comme modèle de l'entreprise » (`creerModele`). Les fixtures de test créent les inspections ouvertes puis les clôturent.
+- B1 écrans : `src/autodiagnostic/` (service, routes, rapport PDF, VoletAutodiagnostic, classes). Le client (admin d'entreprise, responsable QHSE) lit les évaluations terminées, leur PDF et leurs actions ; le consultant conduit, termine, crée les actions (`changerStatutAction` accepte maintenant les origines `inspection` ET `audit`) ; l'admin gère les référentiels, supprime une évaluation terminée. `nombre_evaluations_autodiagnostic()` (0049) : l'admin ne voit pas les évaluations des clients (RLS), seulement leur nombre. Prospects (0050, 08/10/2026) : `creer_prospect()` active aussi `autodiagnostic`, le déclencheur `verifier_modules_prospect()` l'accepte (les autres modules de client restent interdits à un prospect), les prospects existants ont reçu le module ; l'évaluation suit la conversion en client. Pas encore : notes internes sur une évaluation.
+- Site écrit librement (07/10/2026) : liste des sites OU « Autre site (saisir son nom) » (`src/ui/ChoixSite.tsx`, `resoudreSite()` dans `inspections/service.ts`, nom déjà connu = site réutilisé) dans équipements, nouveau salarié (habilitations) et inspections ; registre de sécurité : « Autre site » à écrire dans « Lieu précis » (le client ne crée pas de site, RLS).
+- PWA (07/10/2026) : plateforme installable (`src/app/manifest.ts`, icônes `public/icons/`, start_url `/`). `public/sw.js` (v3) : statiques en cache d'abord, `/registre*` réseau d'abord, toute autre page = réseau seulement, sinon `/hors-ligne.html` (statique, sans donnée) ; JAMAIS d'`/api/*` en cache, aucun cache de données de B2/B4/tableau de bord. Enregistré pour tous par `src/ui/ServiceWorker.tsx` (production seulement) ; nouvelle version = bandeau « Actualiser » (pas de skipWaiting automatique). Décisions de l'utilisateur : hors ligne = saisie B3 seulement ; pas de lecture de données hors ligne. Contexte gardé sur l'appareil (localStorage `ifecarm.contexte` + cache IndexedDB sites/salariés) limité à 12 h comme la session (`DUREE_CONTEXTE_MS`) ; la boîte d'envoi des déclarations n'expire pas.
+- Fournisseur d'e-mail : Brevo (décision 07/10/2026), relais SMTP `smtp-relay.brevo.com:587` STARTTLS exigé quand `SMTP_USER` est défini ; identifiants et expéditeur validé à renseigner dans le `.env` de production (gabarit dans `.env.example`) ; rien n'est encore saisi. Jalons de recyclage B2 alignés sur B3/B4 : 90, 30, 7, échéance.
+- E-mail : SMTP générique (`src/notifications/email.ts`, variables `SMTP_*`, `APP_URL`), Mailpit en local (`npm run db:up`, interface sur le port 8025) ; fournisseur de production à choisir. `npm run relances` met en file puis ENVOIE la file (`file.ts`, rôle de migration) si `SMTP_HOST` est défini.
+
 ## Pièges
 
-- Le serveur `next dev` lancé par Claude s'arrête après ~10 min : l'utilisateur le lance lui-même (`npx next dev -p 3001`).
+- Local rapide : la machine n'a que ~1 Go de RAM libre ; `next dev` met 20-50 s par page. Utiliser le build de production : `npx next build` puis `npx next start -p 3005` (3001 est pris par un autre site). Après une modification : rebuild + redémarrage.
+- Tests : les comptes à 2FA obligatoire ont une session partielle ; les tests hors 2FA appellent `libererA2f(jeton)` (`tests/aide-a2f.ts`, directement en base). `tsc` manque de mémoire sur cette machine : `NODE_OPTIONS=--max-old-space-size=3072`.
+- Hors ligne (B3) : tester sur un BUILD de production (`npx next build` puis `npx next start -p 3002`), pas sur `next dev` (son client de développement empêche l'hydratation sans réseau). `public/sw.js` : statiques en cache d'abord, pages en réseau d'abord, jamais d'`/api/*` en cache. Boîte d'envoi IndexedDB liée au compte (`moi`), vidée de son cache de contexte à la déconnexion.
+
 - `ffmpeg` sans `-nostdin` dans une boucle `while read` avale l'entrée.
-- Les tests créent des entreprises de test : `nettoyerFixtures` désactive celles que le journal empêche de supprimer.
+- Les tests créent des entreprises de test : `nettoyerFixtures` désactive celles que le journal empêche de supprimer (~20 par exécution complète). `npm run nettoyer:tests` (`-- --dry-run` pour un essai) les supprime avec leurs comptes de test (`@test.local`) ; ne touche ni les entreprises actives ni les comptes `@demo.ifecarm.local`.
 
 ## Prochaines étapes
 
-1. Écran de création d'un compte **consultant** (aujourd'hui seulement en base).
-2. Écrans de B2, B3, B4 (le SQL existe).
-3. 2FA et réinitialisation de mot de passe par email.
-4. Relier le catalogue de formations du site à la table `formation` de B2 — chantier séparé.
-5. Rien n'est commité ni en ligne : l'utilisateur décide de chaque mise en ligne.
+1. (fait 05/10/2026, à tester en local) Écran de création d’un compte consultant dans `/administration`, demandes de formation par prospect (`/prospects/nouveau` et `/suivi`).
+2. B2, B3, B4 : faits (catalogue B4 importé), à tester en local.
+3. Tester en bloc en local (2FA, mot de passe oublié, B2, B3, B4, rapport équipements, photos d'équipement, PWA sur téléphone en HTTPS).
+4. Catalogue du site : synchronisation faite (option B) ; à relancer quand le site change.
+5. Guide d'utilisation rédigé le 08/10/2026 : `docs/guide-utilisation.md` (un guide, par profil, en français). À relire contre les écrans après les tests de l'utilisateur ; à mettre à jour quand un écran change.
+6. Rien n'est commité ni en ligne : l'utilisateur décide de chaque mise en ligne.
 
 ## À trancher (hors technique)
 
-- Région d'hébergement : UE (RGPD) ou Afrique de l'Ouest (latence).
-- Notes par formation demandée (évoqué, non précisé).
+- (tranché 05/10/2026 : région UE, France, Scaleway ou OVH ; déclarer le transfert côté Bénin si exigé ; client à hébergement local = cas particulier.)
+- (tranché 05/10/2026 : table `demande_formation`, 0028, interne.)
 
 ## Habitudes de travail
 - Ne jamais commiter, pousser ni déployer sans ordre explicite de l'utilisateur, à ce moment précis. Tout travail reste local tant qu'il n'a pas dit « pousse-le ».

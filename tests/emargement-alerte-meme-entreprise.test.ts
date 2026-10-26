@@ -34,7 +34,7 @@ afterAll(async () => {
 describe('emargement ↔ participant : même entreprise (migration 0007)', () => {
   it("l'application ne peut pas émarger, sous l'entreprise A, un participant de B", async () => {
     await expect(
-      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
+      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
         trx
           .insertInto('emargement')
           .values({
@@ -50,7 +50,7 @@ describe('emargement ↔ participant : même entreprise (migration 0007)', () =>
   })
 
   it('cas nominal : émarger un participant de A sous A est accepté', async () => {
-    await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
+    await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
       trx
         .insertInto('emargement')
         .values({
@@ -72,7 +72,7 @@ describe('emargement ↔ participant : même entreprise (migration 0007)', () =>
 describe('alerte_recyclage ↔ attestation : même entreprise (migration 0007)', () => {
   it("l'application ne peut pas déclencher, sous A, une alerte sur l'attestation de B", async () => {
     await expect(
-      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.utilisateurA1 }, (trx) =>
+      withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) =>
         trx
           .insertInto('alerte_recyclage')
           .values({

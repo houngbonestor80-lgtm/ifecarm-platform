@@ -1,0 +1,264 @@
+{
+  "referentiel": "iso-45001",
+  "titre": "Santé et sécurité au travail — ISO 45001",
+  "description": "Évaluez la maturité de votre système de management de la santé et de la sécurité au travail.",
+  "dureeEstimeeMinutes": 8,
+  "avertissement": "Diagnostic indicatif. Il ne remplace ni un audit de conformité ni un audit de certification.",
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place et documenté", "coefficient": 1 },
+    { "code": "partiel", "libelle": "Partiellement, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    {
+      "seuilMin": 0,
+      "seuilMax": 39,
+      "libelle": "Démarrage",
+      "message": "Votre système de management SST reste à construire. C'est la situation de départ de la plupart des entreprises : l'essentiel est d'établir une base solide avant de viser la certification."
+    },
+    {
+      "seuilMin": 40,
+      "seuilMax": 59,
+      "libelle": "En construction",
+      "message": "Des éléments existent, mais de façon dispersée. Le travail consiste à les structurer en système cohérent et à combler les manques prioritaires."
+    },
+    {
+      "seuilMin": 60,
+      "seuilMax": 79,
+      "libelle": "Structuré",
+      "message": "Votre organisation dispose de bases sérieuses. Une démarche de certification est envisageable à moyen terme, après avoir traité les écarts identifiés."
+    },
+    {
+      "seuilMin": 80,
+      "seuilMax": 100,
+      "libelle": "Avancé",
+      "message": "Votre système est mature. Un audit blanc permettrait de confirmer votre état de préparation à l'audit de certification."
+    }
+  ],
+  "themes": [
+    {
+      "code": "contexte",
+      "libelle": "Contexte et parties intéressées",
+      "questions": [
+        {
+          "id": "ctx-1",
+          "texte": "Avez-vous identifié par écrit les enjeux internes et externes qui influencent la santé et la sécurité dans votre entreprise ?",
+          "aide": "Par exemple : nature de l'activité, sous-traitance, contexte réglementaire, saisonnalité, turnover.",
+          "poids": 2,
+          "recommandation": "Formaliser une analyse du contexte : c'est le point de départ exigé par la norme et la base de toute la démarche."
+        },
+        {
+          "id": "ctx-2",
+          "texte": "Avez-vous recensé vos parties intéressées en matière de SST et leurs attentes ?",
+          "aide": "Salariés, représentants du personnel, sous-traitants, clients, assureurs, administration, riverains.",
+          "poids": 2,
+          "recommandation": "Établir la liste des parties intéressées et de leurs exigences, puis la revoir au moins une fois par an."
+        },
+        {
+          "id": "ctx-3",
+          "texte": "Le périmètre de votre démarche SST est-il défini par écrit (sites, activités, effectifs concernés) ?",
+          "poids": 2,
+          "recommandation": "Définir clairement le périmètre : un périmètre flou rend l'audit de certification impossible."
+        }
+      ]
+    },
+    {
+      "code": "leadership",
+      "libelle": "Leadership et participation des travailleurs",
+      "questions": [
+        {
+          "id": "lea-1",
+          "texte": "Disposez-vous d'une politique santé-sécurité écrite, signée par la direction et communiquée aux salariés ?",
+          "poids": 3,
+          "recommandation": "Rédiger une politique SST signée par la direction, l'afficher et la présenter aux équipes."
+        },
+        {
+          "id": "lea-2",
+          "texte": "Les rôles et responsabilités en matière de santé-sécurité sont-ils attribués nommément ?",
+          "aide": "Qui pilote la SST, qui anime les causeries, qui vérifie les EPI, qui traite les remontées.",
+          "poids": 3,
+          "recommandation": "Attribuer nommément les responsabilités SST et les inscrire dans les fiches de poste."
+        },
+        {
+          "id": "lea-3",
+          "texte": "Les travailleurs sont-ils consultés sur les questions de santé-sécurité ?",
+          "aide": "Comité d'hygiène et de sécurité, réunions sécurité, boîte à idées, consultation avant un changement de poste.",
+          "poids": 3,
+          "recommandation": "Mettre en place un mécanisme régulier de consultation : c'est une exigence forte de l'ISO 45001, souvent sous-estimée."
+        },
+        {
+          "id": "lea-4",
+          "texte": "Un budget est-il alloué spécifiquement à la santé-sécurité ?",
+          "poids": 2,
+          "recommandation": "Identifier une ligne budgétaire SST, même modeste : sans moyens, un plan d'action ne se réalise pas."
+        }
+      ]
+    },
+    {
+      "code": "risques",
+      "libelle": "Évaluation des risques et conformité",
+      "questions": [
+        {
+          "id": "ris-1",
+          "texte": "Avez-vous un document d'évaluation des risques professionnels couvrant tous vos postes de travail ?",
+          "poids": 4,
+          "recommandation": "Réaliser l'évaluation des risques poste par poste : c'est l'obligation centrale de l'employeur et le socle du système."
+        },
+        {
+          "id": "ris-2",
+          "texte": "Ce document a-t-il été mis à jour au cours des douze derniers mois ?",
+          "poids": 3,
+          "recommandation": "Mettre à jour l'évaluation des risques au moins une fois par an, et à chaque changement significatif."
+        },
+        {
+          "id": "ris-3",
+          "texte": "Les risques identifiés sont-ils hiérarchisés selon leur gravité et leur probabilité ?",
+          "poids": 2,
+          "recommandation": "Hiérarchiser les risques pour concentrer les moyens là où l'enjeu est réel."
+        },
+        {
+          "id": "ris-4",
+          "texte": "Tenez-vous à jour la liste des exigences légales applicables à votre activité ?",
+          "poids": 3,
+          "recommandation": "Constituer une veille réglementaire et évaluer périodiquement votre conformité."
+        },
+        {
+          "id": "ris-5",
+          "texte": "Les risques liés aux sous-traitants et aux intervenants extérieurs sont-ils évalués ?",
+          "aide": "Plan de prévention, permis de travail, accueil sécurité des intervenants.",
+          "poids": 3,
+          "recommandation": "Formaliser un plan de prévention avec chaque intervenant extérieur : les accidents en coactivité sont parmi les plus fréquents."
+        },
+        {
+          "id": "ris-6",
+          "texte": "Avez-vous fixé des objectifs SST mesurables, avec des échéances et des responsables ?",
+          "poids": 3,
+          "recommandation": "Traduire la politique en objectifs chiffrés et datés, sinon elle reste déclarative."
+        }
+      ]
+    },
+    {
+      "code": "competences",
+      "libelle": "Compétences, formation et communication",
+      "questions": [
+        {
+          "id": "com-1",
+          "texte": "Chaque salarié reçoit-il une formation à la sécurité adaptée à son poste, tracée par écrit ?",
+          "poids": 4,
+          "recommandation": "Formaliser un plan de formation SST par poste et conserver la preuve des formations suivies."
+        },
+        {
+          "id": "com-2",
+          "texte": "Les nouveaux arrivants bénéficient-ils d'un accueil sécurité avant leur prise de poste ?",
+          "aide": "Y compris les intérimaires, les stagiaires et les sous-traitants.",
+          "poids": 3,
+          "recommandation": "Mettre en place un accueil sécurité systématique : les nouveaux arrivants sont surreprésentés dans les accidents."
+        },
+        {
+          "id": "com-3",
+          "texte": "Suivez-vous les habilitations et leurs dates d'expiration ?",
+          "aide": "Habilitations électriques, CACES, SST, travail en hauteur, permis de feu.",
+          "poids": 3,
+          "recommandation": "Tenir un registre des habilitations avec alertes avant expiration."
+        },
+        {
+          "id": "com-4",
+          "texte": "Les consignes de sécurité sont-elles affichées et compréhensibles par tous les salariés ?",
+          "aide": "Y compris pour les personnes qui lisent difficilement : pictogrammes, consignes illustrées.",
+          "poids": 2,
+          "recommandation": "Adapter les supports au niveau de lecture réel des équipes : une consigne non comprise ne protège personne."
+        },
+        {
+          "id": "com-5",
+          "texte": "Organisez-vous des points sécurité réguliers avec les équipes ?",
+          "poids": 2,
+          "recommandation": "Instaurer des causeries sécurité courtes et régulières : c'est le levier le moins coûteux et le plus efficace."
+        }
+      ]
+    },
+    {
+      "code": "operations",
+      "libelle": "Maîtrise opérationnelle et urgences",
+      "questions": [
+        {
+          "id": "ope-1",
+          "texte": "Les équipements de protection individuelle nécessaires sont-ils fournis et effectivement portés ?",
+          "poids": 3,
+          "recommandation": "Fournir les EPI adaptés et vérifier leur port réel : la fourniture seule ne suffit pas."
+        },
+        {
+          "id": "ope-2",
+          "texte": "Des modes opératoires écrits existent-ils pour les tâches dangereuses ?",
+          "aide": "Travail en hauteur, espaces confinés, consignation électrique, manutention de produits chimiques.",
+          "poids": 3,
+          "recommandation": "Rédiger des modes opératoires pour les tâches à risque élevé et former les opérateurs concernés."
+        },
+        {
+          "id": "ope-3",
+          "texte": "Disposez-vous d'un plan d'urgence testé au moins une fois par an ?",
+          "aide": "Évacuation incendie, accident grave, déversement de produit dangereux.",
+          "poids": 3,
+          "recommandation": "Formaliser les situations d'urgence et réaliser un exercice annuel, avec compte rendu."
+        },
+        {
+          "id": "ope-4",
+          "texte": "Des secouristes formés sont-ils présents sur chaque site et à chaque poste horaire ?",
+          "poids": 3,
+          "recommandation": "Former un nombre suffisant de secouristes pour couvrir tous les horaires, y compris les équipes de nuit."
+        },
+        {
+          "id": "ope-5",
+          "texte": "Les équipements de travail font-ils l'objet de vérifications périodiques tracées ?",
+          "aide": "Appareils de levage, installations électriques, extincteurs, échafaudages.",
+          "poids": 3,
+          "recommandation": "Tenir un registre des vérifications périodiques avec les rapports de contrôle associés."
+        }
+      ]
+    },
+    {
+      "code": "evaluation",
+      "libelle": "Évaluation et amélioration",
+      "questions": [
+        {
+          "id": "eva-1",
+          "texte": "Enregistrez-vous les accidents du travail, y compris ceux sans arrêt ?",
+          "poids": 3,
+          "recommandation": "Enregistrer tous les accidents : sans données, aucune prévention n'est possible."
+        },
+        {
+          "id": "eva-2",
+          "texte": "Les presqu'accidents et situations dangereuses sont-ils remontés et traités ?",
+          "poids": 3,
+          "recommandation": "Mettre en place un dispositif simple de remontée : les presqu'accidents annoncent les accidents graves."
+        },
+        {
+          "id": "eva-3",
+          "texte": "Les accidents font-ils l'objet d'une analyse des causes, au-delà du constat ?",
+          "aide": "Méthode des 5 pourquoi, arbre des causes.",
+          "poids": 3,
+          "recommandation": "Analyser systématiquement les causes profondes et en tirer des actions correctives."
+        },
+        {
+          "id": "eva-4",
+          "texte": "Suivez-vous des indicateurs SST dans le temps ?",
+          "aide": "Taux de fréquence, taux de gravité, nombre de presqu'accidents, actions clôturées dans les délais.",
+          "poids": 2,
+          "recommandation": "Suivre quelques indicateurs simples et les présenter à la direction, pour rendre la performance SST visible."
+        },
+        {
+          "id": "eva-5",
+          "texte": "Réalisez-vous des audits internes SST ?",
+          "poids": 3,
+          "recommandation": "Programmer des audits internes annuels : ils sont exigés par la norme et préparent l'audit de certification."
+        },
+        {
+          "id": "eva-6",
+          "texte": "La direction passe-t-elle en revue le système SST au moins une fois par an ?",
+          "poids": 3,
+          "recommandation": "Instaurer une revue de direction annuelle, avec compte rendu et décisions tracées."
+        }
+      ]
+    }
+  ]
+}

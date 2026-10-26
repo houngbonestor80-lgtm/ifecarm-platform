@@ -1,0 +1,82 @@
+{
+  "referentiel": "iso-14001",
+  "titre": "Management environnemental — ISO 14001",
+  "description": "Évaluez la maturité de votre système de management environnemental et la maîtrise de vos impacts.",
+  "dureeEstimeeMinutes": 8,
+  "avertissement": "Diagnostic indicatif. Il ne remplace ni un audit de conformité réglementaire ni un audit de certification.",
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place et documenté", "coefficient": 1 },
+    { "code": "partiel", "libelle": "Partiellement, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    { "seuilMin": 0, "seuilMax": 39, "libelle": "Démarrage", "message": "Vos impacts environnementaux ne sont pas encore identifiés ni maîtrisés. La première étape est d'établir ce que votre activité rejette, consomme et produit comme déchets." },
+    { "seuilMin": 40, "seuilMax": 59, "libelle": "En construction", "message": "Des pratiques existent, souvent par obligation ponctuelle. L'enjeu est de passer d'actions isolées à une démarche structurée." },
+    { "seuilMin": 60, "seuilMax": 79, "libelle": "Structuré", "message": "Votre système environnemental repose sur des bases sérieuses. Une démarche de certification est envisageable après traitement des écarts." },
+    { "seuilMin": 80, "seuilMax": 100, "libelle": "Avancé", "message": "Votre système est mature. Un audit blanc permettrait de confirmer votre préparation à l'audit de certification." }
+  ],
+  "themes": [
+    {
+      "code": "contexte",
+      "libelle": "Contexte et engagement",
+      "questions": [
+        { "id": "ctx-1", "texte": "Disposez-vous d'une politique environnementale écrite, signée par la direction ?", "poids": 3, "recommandation": "Rédiger une politique environnementale signée, incluant l'engagement de protection de l'environnement et de conformité réglementaire." },
+        { "id": "ctx-2", "texte": "Le périmètre de votre démarche environnementale est-il défini par écrit ?", "poids": 2, "recommandation": "Délimiter clairement les sites et activités couverts." },
+        { "id": "ctx-3", "texte": "Une personne est-elle nommément responsable des questions environnementales ?", "poids": 3, "recommandation": "Désigner un référent environnement : sans responsable identifié, le sujet ne progresse pas." },
+        { "id": "ctx-4", "texte": "Avez-vous recensé les attentes environnementales de vos parties intéressées ?", "aide": "Riverains, administration, clients, bailleurs, associations.", "poids": 2, "recommandation": "Recenser ces attentes : les plaintes de riverains sont souvent le premier signal d'alerte." }
+      ]
+    },
+    {
+      "code": "aspects",
+      "libelle": "Aspects et impacts environnementaux",
+      "questions": [
+        { "id": "asp-1", "texte": "Avez-vous identifié les aspects environnementaux de votre activité ?", "aide": "Rejets dans l'eau et dans l'air, déchets, bruit, consommations d'eau et d'énergie, risque de pollution des sols.", "poids": 4, "recommandation": "Réaliser l'analyse environnementale : c'est le socle de toute la démarche, et la première chose qu'un auditeur demande." },
+        { "id": "asp-2", "texte": "Ces aspects sont-ils hiérarchisés selon l'importance de leur impact ?", "poids": 3, "recommandation": "Hiérarchiser les aspects pour concentrer les moyens sur ceux qui comptent vraiment." },
+        { "id": "asp-3", "texte": "Les aspects liés à vos sous-traitants et fournisseurs sont-ils pris en compte ?", "poids": 2, "recommandation": "Étendre l'analyse aux activités sous-traitées sur votre site : leurs rejets engagent votre responsabilité." },
+        { "id": "asp-4", "texte": "Avez-vous fixé des objectifs environnementaux chiffrés, avec échéances et responsables ?", "poids": 3, "recommandation": "Traduire la politique en objectifs mesurables : réduction des déchets, des consommations, des rejets." }
+      ]
+    },
+    {
+      "code": "conformite",
+      "libelle": "Conformité réglementaire",
+      "questions": [
+        { "id": "con-1", "texte": "Tenez-vous à jour la liste des exigences réglementaires environnementales applicables à votre activité ?", "poids": 4, "recommandation": "Constituer une veille réglementaire environnementale : c'est l'exigence la plus contrôlée en audit." },
+        { "id": "con-2", "texte": "Disposez-vous des autorisations administratives nécessaires à votre exploitation ?", "aide": "Autorisation d'exploiter, déclaration environnementale, autorisations de rejet ou de forage selon l'activité.", "poids": 4, "recommandation": "Vérifier la validité de vos autorisations d'exploitation : leur absence expose à un arrêt d'activité." },
+        { "id": "con-3", "texte": "Évaluez-vous périodiquement votre conformité à ces exigences ?", "poids": 3, "recommandation": "Réaliser une évaluation de conformité au moins annuelle, avec constats tracés." }
+      ]
+    },
+    {
+      "code": "operations",
+      "libelle": "Maîtrise opérationnelle",
+      "questions": [
+        { "id": "ope-1", "texte": "Vos déchets sont-ils triés, stockés à l'abri et remis à des prestataires autorisés ?", "poids": 4, "recommandation": "Organiser le tri et faire appel à des prestataires autorisés, avec justificatifs d'élimination conservés." },
+        { "id": "ope-2", "texte": "Conservez-vous les preuves d'élimination de vos déchets dangereux ?", "aide": "Bordereaux, certificats de destruction, attestations du prestataire.", "poids": 3, "recommandation": "Archiver les justificatifs d'élimination : sans eux, la traçabilité des déchets dangereux est impossible à démontrer." },
+        { "id": "ope-3", "texte": "Les produits chimiques et hydrocarbures sont-ils stockés sur rétention, à l'abri des intempéries ?", "poids": 4, "recommandation": "Mettre les stockages sur rétention : une cuve percée sans rétention entraîne une pollution des sols et un coût de dépollution majeur." },
+        { "id": "ope-4", "texte": "Les fiches de données de sécurité des produits utilisés sont-elles disponibles et connues des utilisateurs ?", "poids": 2, "recommandation": "Tenir les fiches de données de sécurité accessibles au poste de travail." },
+        { "id": "ope-5", "texte": "Suivez-vous vos consommations d'eau et d'énergie ?", "poids": 2, "recommandation": "Relever régulièrement les consommations : elles constituent souvent les premiers indicateurs environnementaux exploitables." },
+        { "id": "ope-6", "texte": "Vos rejets d'eaux usées font-ils l'objet d'un traitement ou d'un contrôle avant rejet ?", "poids": 3, "recommandation": "Caractériser vos rejets et vérifier leur conformité avant rejet dans le milieu ou le réseau." }
+      ]
+    },
+    {
+      "code": "urgences",
+      "libelle": "Situations d'urgence",
+      "questions": [
+        { "id": "urg-1", "texte": "Avez-vous identifié les situations d'urgence à conséquences environnementales ?", "aide": "Déversement accidentel, incendie, fuite de cuve, rupture de canalisation.", "poids": 3, "recommandation": "Recenser les scénarios d'urgence environnementale propres à votre site." },
+        { "id": "urg-2", "texte": "Disposez-vous de moyens d'intervention en cas de déversement ?", "aide": "Kit antipollution, absorbants, obturateurs de réseau.", "poids": 3, "recommandation": "Équiper les zones à risque en moyens d'intervention et former le personnel à leur usage." },
+        { "id": "urg-3", "texte": "Ces situations d'urgence font-elles l'objet d'exercices périodiques ?", "poids": 2, "recommandation": "Tester au moins un scénario par an : un kit antipollution que personne ne sait utiliser ne sert à rien." }
+      ]
+    },
+    {
+      "code": "amelioration",
+      "libelle": "Évaluation et amélioration",
+      "questions": [
+        { "id": "ame-1", "texte": "Les salariés sont-ils sensibilisés aux consignes environnementales de leur poste ?", "poids": 3, "recommandation": "Sensibiliser les équipes : le tri et la prévention des déversements se jouent au niveau des gestes quotidiens." },
+        { "id": "ame-2", "texte": "Suivez-vous des indicateurs environnementaux dans le temps ?", "aide": "Volumes de déchets, consommation d'eau, incidents environnementaux.", "poids": 2, "recommandation": "Suivre quelques indicateurs simples et les présenter à la direction." },
+        { "id": "ame-3", "texte": "Réalisez-vous des audits internes environnementaux ?", "poids": 3, "recommandation": "Programmer un audit interne annuel : il est exigé par la norme et prépare la certification." },
+        { "id": "ame-4", "texte": "La direction passe-t-elle en revue le système environnemental au moins une fois par an ?", "poids": 3, "recommandation": "Instaurer une revue de direction annuelle, avec décisions tracées." },
+        { "id": "ame-5", "texte": "Les incidents environnementaux font-ils l'objet d'une analyse et d'actions correctives ?", "poids": 3, "recommandation": "Analyser chaque incident, même mineur, et en tirer des actions correctives suivies." }
+      ]
+    }
+  ]
+}

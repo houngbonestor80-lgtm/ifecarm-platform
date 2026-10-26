@@ -65,9 +65,10 @@ export async function creerFixturesInspections(base: Fixtures): Promise<Fixtures
        VALUES ($1, $2, 'Modèle catalogue (test)', 'site', $3, $4, $5, CASE WHEN $5 = 'terminee' THEN now() END) RETURNING id`,
       [entreprise, modele.id, site, base.consultantC1, statut],
     )
-  const inspectionA = await nouvelleInspection(base.entrepriseA, siteA.id, 'terminee')
+  // Créées ouvertes : les points ne s'ajoutent plus à une inspection clôturée (migration 0048) ; clôture juste après.
+  const inspectionA = await nouvelleInspection(base.entrepriseA, siteA.id, 'en_cours')
   const inspectionA2 = await nouvelleInspection(base.entrepriseA, siteA.id, 'brouillon')
-  const inspectionB = await nouvelleInspection(base.entrepriseB, siteB.id, 'terminee')
+  const inspectionB = await nouvelleInspection(base.entrepriseB, siteB.id, 'en_cours')
 
   const nouvelItem = (entreprise: string, inspection: string, ordre: number, libelle: string, resultat: string | null) =>
     q(
@@ -80,6 +81,8 @@ export async function creerFixturesInspections(base: Fixtures): Promise<Fixtures
   const itemA4 = await nouvelItem(base.entrepriseA, inspectionA.id, 4, 'Groupe électrogène', 'non_applicable')
   const itemA2Insp2 = await nouvelItem(base.entrepriseA, inspectionA2.id, 1, 'Item du brouillon', null)
   const itemB1 = await nouvelItem(base.entrepriseB, inspectionB.id, 1, 'Issues de secours dégagées', 'non_conforme')
+
+  await q(`UPDATE inspection SET statut = 'terminee', terminee_le = now() WHERE id = ANY($1)`, [[inspectionA.id, inspectionB.id]])
 
   const ncA = await q(
     `INSERT INTO non_conformite (entreprise_id, inspection_id, item_inspection_id, gravite, description)
@@ -155,9 +158,14 @@ export async function creerFixturesInspections(base: Fixtures): Promise<Fixtures
 export async function nettoyerFixturesInspections(f: FixturesInspections): Promise<void> {
   const client = new Client({ connectionString: process.env.DATABASE_URL_MIGRATE })
   await client.connect()
-  await client.query('DELETE FROM modele_inspection WHERE id = $1', [f.modeleCatalogue])
+  // Si les entreprises de test n'ont pas pu être supprimées (journal d'audit
+  // immuable), le modèle reste référencé : on le désactive pour qu'il
+  // n'apparaisse pas dans le catalogue de la base de développement.
+  await client.query('DELETE FROM modele_inspection WHERE id = $1', [f.modeleCatalogue]).catch(() =>
+    client.query('UPDATE modele_inspection SET actif = false WHERE id = $1', [f.modeleCatalogue]),
+  )
   await client.query('DELETE FROM utilisateur WHERE id = ANY($1)', [
     [f.consultantSansAcces, f.consultantExpire, f.consultantLecture],
-  ])
+  ]).catch(() => {})
   await client.end()
 }

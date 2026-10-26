@@ -34,6 +34,11 @@ export async function accesConsultantValide(
   trx: Transaction<DB>,
   params: { utilisateurId: string, entrepriseId: string },
 ): Promise<AccesConsultant | null> {
+  // Administrateur : accès à toute entreprise cliente ou prospect active, en écriture,
+  // sans mandat (migration 0021). Le consultant reste limité à ses mandats ci-dessous.
+  const { rows: [admin] } = await sql<{ ok: boolean }>`select entreprise_accessible_admin(${params.entrepriseId}) as ok`.execute(trx)
+  if (admin?.ok) return { entrepriseId: params.entrepriseId, ecriture: true, finLe: null }
+
   const aujourdHui = new Date()
   const row = await trx
     .selectFrom('acces_consultant')

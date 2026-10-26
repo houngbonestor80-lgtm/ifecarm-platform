@@ -1,4 +1,4 @@
-import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto'
+import { createCipheriv, createDecipheriv, createHmac, randomBytes } from 'node:crypto'
 import * as OTPAuth from 'otpauth'
 
 /**
@@ -53,6 +53,20 @@ export function genererSecretTotp(email: string): EnrolementTotp {
     secret: new OTPAuth.Secret({ size: 20 }),
   })
   return { secretBase32: totp.secret.base32, uriEnrolement: totp.toString() }
+}
+
+/** Empreinte d'un code de secours : HMAC-SHA256 avec la clé serveur (40 à 50 bits d'entropie : un simple hash serait attaquable hors ligne). */
+export function empreinteCodeSecours(code: string): string {
+  return createHmac('sha256', cle()).update(`codes-secours:${code}`).digest('hex')
+}
+
+const PERIODE_TOTP = 30
+
+/** Pas de 30 s auquel correspond le code (tolérance ±1 pas), ou null. Sert à refuser le rejeu d'un code déjà utilisé. */
+export function pasTotpValide(secretBase32: string, code: string, maintenantMs = Date.now()): number | null {
+  const totp = new OTPAuth.TOTP({ algorithm: 'SHA1', digits: 6, period: PERIODE_TOTP, secret: OTPAuth.Secret.fromBase32(secretBase32) })
+  const delta = totp.validate({ token: code, window: 1, timestamp: maintenantMs })
+  return delta === null ? null : Math.floor(maintenantMs / 1000 / PERIODE_TOTP) + delta
 }
 
 export function verifierCodeTotp(secretBase32: string, code: string): boolean {

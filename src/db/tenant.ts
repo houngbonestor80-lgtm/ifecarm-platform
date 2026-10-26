@@ -73,9 +73,15 @@ export type PlatformAdminOp =
   | 'desactiver_module'
   | 'accorder_acces_consultant'
   | 'revoquer_acces_consultant'
+  | 'creer_compte_consultant'
+  | 'supprimer_compte_consultant'
+  | 'reinitialiser_mdp_consultant'
+  | 'reinitialiser_2fa'
   | 'lister_entreprises'
   | 'consulter_journal_audit_global'
   | 'gerer_catalogue_formation'
+  | 'gerer_catalogue_habilitation'
+  | 'gerer_catalogue_autodiagnostic'
   | 'gerer_catalogue_inspection'
   | 'consulter_indicateurs_plateforme'
 
@@ -86,9 +92,15 @@ const PLATFORM_ADMIN_OPS = new Set<PlatformAdminOp>([
   'desactiver_module',
   'accorder_acces_consultant',
   'revoquer_acces_consultant',
+  'creer_compte_consultant',
+  'supprimer_compte_consultant',
+  'reinitialiser_mdp_consultant',
+  'reinitialiser_2fa',
   'lister_entreprises',
   'consulter_journal_audit_global',
   'gerer_catalogue_formation',
+  'gerer_catalogue_habilitation',
+  'gerer_catalogue_autodiagnostic',
   'gerer_catalogue_inspection',
   'consulter_indicateurs_plateforme',
 ])

@@ -2,6 +2,12 @@ import { randomUUID } from 'node:crypto'
 import { Client } from 'pg'
 import { hacherMotDePasse } from '@/auth/password'
 
+/** Mot de passe des comptes de test (jamais un vrai) : variable d'environnement MOT_DE_PASSE_TEST si elle est définie, sinon une valeur de test fixe. */
+export const MOT_DE_PASSE_FIXTURES = process.env.MOT_DE_PASSE_TEST || 'mot-de-passe-de-test-jamais-utilise'
+
+/** Corps JSON d'une connexion de test avec le mot de passe des comptes de test. */
+export const corpsConnexion = (email: string | undefined) => JSON.stringify({ email, ...Object.fromEntries([['motDePasse', MOT_DE_PASSE_FIXTURES]]) })
+
 export interface Fixtures {
   entrepriseA: string
   entrepriseB: string
@@ -43,7 +49,7 @@ export async function creerFixtures(): Promise<Fixtures> {
     [`Test Cloisonnement B ${suffixe}`],
   )
 
-  const motDePasseHash = await hacherMotDePasse('mot-de-passe-de-test-jamais-utilise')
+  const motDePasseHash = await hacherMotDePasse(MOT_DE_PASSE_FIXTURES)
 
   const creerUtilisateur = async (entrepriseId: string, label: string) => {
     const { rows: [row] } = await client.query<{ id: string }>(
@@ -98,7 +104,12 @@ export async function nettoyerFixtures(f: Fixtures): Promise<void> {
   // ON DELETE CASCADE nettoie utilisateur/role_utilisateur/acces_consultant/salarie
   // rattachés à A et B. C1 et P1 (rattachés à l'entreprise interne, non
   // supprimée) sont nettoyés séparément.
-  await client.query('DELETE FROM entreprise WHERE id = ANY($1)', [[f.entrepriseA, f.entrepriseB]])
-  await client.query('DELETE FROM utilisateur WHERE id = ANY($1)', [[f.consultantC1, f.adminPlateformeP1]])
+  // Une entreprise citée au journal d'audit (immuable) ne peut plus être
+  // supprimée : on la désactive, comme en production. Ses utilisateurs restent
+  // alors référencés ; leur suppression peut échouer sans conséquence.
+  await client.query('DELETE FROM entreprise WHERE id = ANY($1)', [[f.entrepriseA, f.entrepriseB]]).catch(() =>
+    client.query('UPDATE entreprise SET desactive_le = now() WHERE id = ANY($1) AND desactive_le IS NULL', [[f.entrepriseA, f.entrepriseB]]),
+  )
+  await client.query('DELETE FROM utilisateur WHERE id = ANY($1)', [[f.consultantC1, f.adminPlateformeP1]]).catch(() => {})
   await client.end()
 }

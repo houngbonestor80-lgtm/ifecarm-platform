@@ -8,7 +8,7 @@ import type { DB } from '@/db/types.generated'
  * À appeler sous withAuthenticatedUser(utilisateurId) : la fonction SQL lit
  * l'appelant dans app.utilisateur_id et revérifie elle-même qu'il s'agit d'un
  * consultant IFECARM actif. Elle crée l'entreprise (statut 'prospect'),
- * n'active que 'inspections' et 'tableau_bord', accorde au consultant appelant
+ * n'active que 'inspections', 'tableau_bord' et 'autodiagnostic', accorde au consultant appelant
  * un accès en écriture borné dans le temps, et journalise — rien d'autre.
  *
  * Retourne l'identifiant du prospect : le consultant peut ensuite entrer dans

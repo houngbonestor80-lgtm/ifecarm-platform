@@ -50,3 +50,18 @@ export async function urlTelechargementPresignee(cleStockage: string): Promise<s
 export async function supprimerFichier(cleStockage: string): Promise<void> {
   await client.send(new DeleteObjectCommand({ Bucket: bucket(), Key: cleStockage }))
 }
+
+/**
+ * Envoi par le serveur (photos d'inspection) : le fichier a déjà été validé
+ * (type réel, taille) côté serveur, ce que l'URL présignée ne permet pas.
+ */
+export async function televerserFichier(cleStockage: string, octets: Uint8Array, typeMime: string): Promise<void> {
+  await client.send(new PutObjectCommand({ Bucket: bucket(), Key: cleStockage, Body: octets, ContentType: typeMime }))
+}
+
+/** Lecture par le serveur, après contrôle d'accès (RLS sur `fichier`) : photos servies par la plateforme. */
+export async function lireFichier(cleStockage: string): Promise<Uint8Array> {
+  const r = await client.send(new GetObjectCommand({ Bucket: bucket(), Key: cleStockage }))
+  if (!r.Body) throw new Error(`Objet vide : ${cleStockage}`)
+  return r.Body.transformToByteArray()
+}

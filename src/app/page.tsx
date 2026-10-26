@@ -1,13 +1,10 @@
+import { redirect } from 'next/navigation'
+
 /**
- * Placeholder — le socle (migrations, cloisonnement, auth, stockage) passe
- * avant les écrans (cf. tâche : "montre-moi les migrations et les tests de
- * cloisonnement avant d'attaquer les écrans"). Rien d'autre ici pour l'instant.
+ * Accueil : le module actif est celui des inspections. La page d'inspections
+ * redirige elle-même vers la connexion (pas de session) ou vers le choix
+ * d'entreprise (consultant sans entreprise active).
  */
-export default function Home() {
-  return (
-    <main>
-      <h1>Plateforme QHSE IFECARM</h1>
-      <p>Socle en cours de construction — pas encore d’écrans.</p>
-    </main>
-  )
+export default function Accueil() {
+  redirect('/inspections')
 }

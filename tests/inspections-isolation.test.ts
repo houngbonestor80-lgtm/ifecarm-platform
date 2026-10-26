@@ -81,10 +81,18 @@ describe('Cloisonnement B5 — un client ne voit pas les inspections d’un autr
     ).rejects.toThrow(/row-level security/i)
   })
 
-  it('aucun DELETE applicatif sur les inspections (une inspection s’annule, elle ne disparaît pas)', async () => {
+  // Règle mixte (migration 0012) : le DELETE applicatif existe, mais une
+  // inspection clôturée ou porteuse de NC est refusée par le garde-fou en base.
+  it('DELETE applicatif refusé en base sur une inspection clôturée avec NC (elle s’annule, elle ne disparaît pas)', async () => {
     await expect(
-      withTenant(tenantA(), (trx) => trx.deleteFrom('inspection').where('id', '=', fi.inspectionA2).execute()),
-    ).rejects.toMatchObject({ code: '42501' })
+      withTenant(tenantA(), (trx) => trx.deleteFrom('inspection').where('id', '=', fi.inspectionA).execute()),
+    ).rejects.toThrow(/doit d'abord être rangée/)
+  })
+
+  it('DELETE applicatif cloisonné : depuis B, l’inspection de A n’est pas atteinte', async () => {
+    const r = await withTenant({ entrepriseId: f.entrepriseB, utilisateurId: f.utilisateurB1 }, (trx) =>
+      trx.deleteFrom('inspection').where('id', '=', fi.inspectionA2).executeTakeFirst())
+    expect(Number(r.numDeletedRows)).toBe(0)
   })
 })
 
@@ -137,7 +145,7 @@ describe('creer_prospect() — création terrain par le consultant', () => {
   let prospectId: string
   let siteProspect: string
 
-  it('un consultant crée un prospect : statut prospect, deux modules, accès borné pour lui seul', async () => {
+  it('un consultant crée un prospect : statut prospect, trois modules (inspections, tableau de bord, autodiagnostic), accès en écriture sans délai, pour lui seul', async () => {
     prospectId = await withAuthenticatedUser(f.consultantC1, (trx) =>
       creerProspect(trx, { nom: `Prospect test ${fi.suffixe}`, pays: 'BJ', secteur: 'BTP' }),
     )
@@ -150,10 +158,10 @@ describe('creer_prospect() — création terrain par le consultant', () => {
       journal: (await c.query("SELECT entreprise_id, utilisateur_id FROM journal_audit WHERE action = 'creer_prospect' AND objet_id = $1", [prospectId])).rows,
     }))
     expect(lu.entreprise).toEqual({ statut_relation: 'prospect', interne: false })
-    expect(lu.modules).toEqual(['inspections', 'tableau_bord'])
+    expect(lu.modules).toEqual(['autodiagnostic', 'inspections', 'tableau_bord'])
     expect(lu.acces).toHaveLength(1)
     expect(lu.acces[0]).toMatchObject({ utilisateur_id: f.consultantC1, ecriture: true })
-    expect(lu.acces[0].fin_le).toBeTruthy()
+    expect(lu.acces[0].fin_le).toBeNull()   // plus de délai (migration 0024)
     // Journalisé, sans clé étrangère vers l'entreprise (purge possible).
     expect(lu.journal).toEqual([{ entreprise_id: null, utilisateur_id: f.consultantC1 }])
   })
@@ -358,7 +366,7 @@ describe('Plan d’action = action_corrective d’origine inspection', () => {
 
   it('une action d’origine inspection sur une non-conformité de A est acceptée', async () => {
     const id = (
-      await withTenant(tenantA(), (trx) =>
+      await withTenant({ entrepriseId: f.entrepriseA, utilisateurId: f.consultantC1 }, (trx) => // écriture réservée à l'équipe IFECARM (0035)
         trx
           .insertInto('action_corrective')
           .values({

@@ -1,0 +1,88 @@
+{
+  "referentiel": "iso-22000",
+  "titre": "Sécurité des denrées alimentaires — ISO 22000",
+  "description": "Évaluez la maîtrise de la sécurité sanitaire de vos produits, des prérequis d'hygiène au plan HACCP.",
+  "dureeEstimeeMinutes": 9,
+  "avertissement": "Diagnostic indicatif. Il ne remplace ni une inspection sanitaire, ni un audit de conformité, ni un audit de certification.",
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place et documenté", "coefficient": 1 },
+    { "code": "partiel", "libelle": "Partiellement, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    { "seuilMin": 0, "seuilMax": 39, "libelle": "Démarrage", "message": "Les bases de la maîtrise sanitaire restent à construire. Dans l'alimentaire, c'est un sujet prioritaire : un incident engage la santé des consommateurs et la survie de l'entreprise." },
+    { "seuilMin": 40, "seuilMax": 59, "libelle": "En construction", "message": "Les bonnes pratiques d'hygiène existent, mais l'analyse des dangers et sa formalisation restent incomplètes." },
+    { "seuilMin": 60, "seuilMax": 79, "libelle": "Structuré", "message": "Votre maîtrise sanitaire repose sur des bases sérieuses. Une démarche de certification est envisageable après traitement des écarts." },
+    { "seuilMin": 80, "seuilMax": 100, "libelle": "Avancé", "message": "Votre système est mature. Un audit blanc permettrait de confirmer votre préparation à l'audit de certification." }
+  ],
+  "themes": [
+    {
+      "code": "engagement",
+      "libelle": "Engagement et organisation",
+      "questions": [
+        { "id": "eng-1", "texte": "Disposez-vous d'une politique de sécurité des denrées alimentaires écrite, signée par la direction ?", "poids": 3, "recommandation": "Rédiger une politique signée par la direction et la communiquer à l'ensemble du personnel." },
+        { "id": "eng-2", "texte": "Une équipe ou un responsable sécurité des aliments est-il désigné ?", "poids": 3, "recommandation": "Constituer une équipe sécurité des aliments, même réduite, avec un responsable clairement identifié." },
+        { "id": "eng-3", "texte": "Le champ de votre démarche est-il défini par écrit (produits, procédés, sites) ?", "poids": 2, "recommandation": "Délimiter le champ d'application : produits couverts, étapes maîtrisées, sites concernés." },
+        { "id": "eng-4", "texte": "Disposez-vous des autorisations sanitaires nécessaires à votre activité ?", "poids": 4, "recommandation": "Vérifier la validité de vos autorisations sanitaires : leur absence expose à une fermeture administrative." }
+      ]
+    },
+    {
+      "code": "prerequis",
+      "libelle": "Programmes prérequis et hygiène",
+      "questions": [
+        { "id": "pre-1", "texte": "Disposez-vous d'un plan de nettoyage et de désinfection écrit, avec un suivi de son exécution ?", "aide": "Quoi nettoyer, avec quel produit, à quelle fréquence, par qui, et comment on le vérifie.", "poids": 4, "recommandation": "Formaliser le plan de nettoyage et tracer son exécution : un nettoyage non tracé est réputé non fait en audit." },
+        { "id": "pre-2", "texte": "Un plan de lutte contre les nuisibles est-il en place, avec un suivi des interventions ?", "aide": "Rongeurs, insectes volants et rampants, oiseaux.", "poids": 4, "recommandation": "Mettre en place un plan de lutte contre les nuisibles, avec plan d'implantation des pièges et rapports d'intervention conservés." },
+        { "id": "pre-3", "texte": "La qualité de l'eau utilisée en production est-elle contrôlée ?", "poids": 4, "recommandation": "Faire analyser périodiquement l'eau de production : c'est un point critique en contexte de réseau irrégulier ou de forage." },
+        { "id": "pre-4", "texte": "Les locaux permettent-ils une marche en avant, sans croisement entre produits crus et produits finis ?", "poids": 3, "recommandation": "Organiser les flux pour éviter les croisements : à défaut d'une marche en avant dans l'espace, l'organiser dans le temps." },
+        { "id": "pre-5", "texte": "La chaîne du froid est-elle maîtrisée et les températures enregistrées ?", "aide": "Chambres froides, vitrines, transport, y compris en cas de coupure d'électricité.", "poids": 4, "recommandation": "Enregistrer les températures et définir la conduite à tenir en cas de rupture de la chaîne du froid." },
+        { "id": "pre-6", "texte": "La maintenance des équipements en contact avec les denrées est-elle planifiée ?", "poids": 2, "recommandation": "Planifier la maintenance des équipements et utiliser des lubrifiants de qualité alimentaire aux points de contact." },
+        { "id": "pre-7", "texte": "Les déchets sont-ils évacués selon un circuit défini, sans risque de contamination ?", "poids": 2, "recommandation": "Définir un circuit de déchets séparé des flux de production." }
+      ]
+    },
+    {
+      "code": "haccp",
+      "libelle": "Analyse des dangers et points critiques",
+      "questions": [
+        { "id": "hac-1", "texte": "Avez-vous réalisé une analyse des dangers biologiques, chimiques et physiques pour vos produits ?", "poids": 4, "recommandation": "Conduire une analyse des dangers formalisée : c'est le cœur de l'ISO 22000 et l'exigence la plus contrôlée." },
+        { "id": "hac-2", "texte": "Disposez-vous de diagrammes de fabrication à jour, vérifiés sur le terrain ?", "poids": 3, "recommandation": "Établir les diagrammes de fabrication et les confronter à la réalité de l'atelier, étape par étape." },
+        { "id": "hac-3", "texte": "Vos points critiques pour la maîtrise (CCP) sont-ils identifiés ?", "poids": 4, "recommandation": "Identifier les CCP : ce sont les étapes où une perte de maîtrise rend le produit dangereux." },
+        { "id": "hac-4", "texte": "Des limites critiques sont-elles définies pour chaque CCP ?", "aide": "Température et durée de cuisson, pH, teneur en sel, temps de refroidissement.", "poids": 4, "recommandation": "Fixer des limites critiques mesurables et justifiées pour chaque CCP." },
+        { "id": "hac-5", "texte": "La surveillance des CCP est-elle réalisée et enregistrée ?", "poids": 4, "recommandation": "Enregistrer la surveillance de chaque CCP : sans enregistrement, la maîtrise ne peut pas être démontrée." },
+        { "id": "hac-6", "texte": "Les corrections à appliquer en cas de dépassement d'une limite critique sont-elles définies à l'avance ?", "poids": 3, "recommandation": "Écrire la conduite à tenir avant l'incident : au moment du dépassement, il est trop tard pour improviser." },
+        { "id": "hac-7", "texte": "Les allergènes présents dans vos produits sont-ils identifiés et maîtrisés ?", "aide": "Séparation des matières, nettoyage entre productions, étiquetage.", "poids": 3, "recommandation": "Maîtriser les allergènes de la réception à l'étiquetage : c'est une cause fréquente de rappel de produits." }
+      ]
+    },
+    {
+      "code": "tracabilite",
+      "libelle": "Traçabilité et gestion de crise",
+      "questions": [
+        { "id": "tra-1", "texte": "Pouvez-vous retrouver l'origine de chaque matière première entrant dans un lot de produit fini ?", "poids": 4, "recommandation": "Mettre en place une traçabilité amont complète : c'est ce qui permet de limiter un rappel à quelques lots plutôt qu'à toute la production." },
+        { "id": "tra-2", "texte": "Pouvez-vous identifier les clients ayant reçu un lot donné ?", "poids": 4, "recommandation": "Assurer la traçabilité aval : sans elle, un rappel devient impossible à cibler." },
+        { "id": "tra-3", "texte": "Disposez-vous d'une procédure de retrait et de rappel des produits ?", "poids": 3, "recommandation": "Formaliser la procédure de retrait-rappel : qui décide, qui prévient l'administration, qui informe les clients." },
+        { "id": "tra-4", "texte": "Cette procédure a-t-elle déjà été testée par un exercice ?", "poids": 2, "recommandation": "Réaliser un exercice de rappel annuel : il révèle les failles de traçabilité avant qu'un incident réel ne les révèle." },
+        { "id": "tra-5", "texte": "Les réclamations clients relatives à la sécurité des produits sont-elles enregistrées et analysées ?", "poids": 3, "recommandation": "Traiter chaque réclamation sanitaire comme un signal : elles précèdent souvent les incidents graves." }
+      ]
+    },
+    {
+      "code": "personnel",
+      "libelle": "Personnel et formation",
+      "questions": [
+        { "id": "per-1", "texte": "Le personnel est-il formé aux bonnes pratiques d'hygiène, avec une trace écrite ?", "poids": 4, "recommandation": "Former tout le personnel à l'hygiène, y compris les saisonniers, et conserver les attestations." },
+        { "id": "per-2", "texte": "Les règles d'hygiène du personnel sont-elles définies et appliquées ?", "aide": "Tenue, lavage des mains, bijoux, cheveux, conduite à tenir en cas de maladie.", "poids": 3, "recommandation": "Afficher les règles d'hygiène aux points d'entrée et en contrôler l'application." },
+        { "id": "per-3", "texte": "Le suivi médical du personnel en contact avec les denrées est-il assuré ?", "poids": 3, "recommandation": "Organiser le suivi médical du personnel de production, selon les exigences applicables à votre activité." }
+      ]
+    },
+    {
+      "code": "verification",
+      "libelle": "Vérification et amélioration",
+      "questions": [
+        { "id": "ver-1", "texte": "Réalisez-vous des analyses microbiologiques sur vos produits ou surfaces ?", "poids": 3, "recommandation": "Établir un plan d'analyses avec un laboratoire, pour vérifier l'efficacité réelle de votre maîtrise." },
+        { "id": "ver-2", "texte": "Les résultats d'analyses sont-ils exploités et suivis dans le temps ?", "poids": 3, "recommandation": "Suivre l'évolution des résultats plutôt que de les archiver : une dérive se voit sur la tendance, pas sur une analyse isolée." },
+        { "id": "ver-3", "texte": "Réalisez-vous des audits internes ou des inspections d'hygiène régulières ?", "poids": 3, "recommandation": "Programmer des inspections internes fréquentes, en plus de l'audit interne annuel." },
+        { "id": "ver-4", "texte": "La direction passe-t-elle en revue le système au moins une fois par an ?", "poids": 3, "recommandation": "Instaurer une revue de direction annuelle, avec décisions tracées et moyens alloués." },
+        { "id": "ver-5", "texte": "Les non-conformités font-elles l'objet d'une analyse des causes et d'actions correctives suivies ?", "poids": 3, "recommandation": "Analyser les causes profondes des non-conformités sanitaires et vérifier l'efficacité des actions engagées." }
+      ]
+    }
+  ]
+}
