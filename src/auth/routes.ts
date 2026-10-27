@@ -1,3 +1,4 @@
+import { after } from 'next/server'
 import { connecter } from './connexion'
 import { confirmerActivation, demarrerActivation, desactiverA2f, etatA2f, regenererCodesSecours, revoquerMesAppareils, verifierCodeConnexion } from './deuxfa'
 import { demanderReinitialisation, reinitialiserMotDePasse } from './reinitialisation'
@@ -151,8 +152,10 @@ export const traiterDemandeReinitialisation = (request: Request, envoyer?: (c: C
     if (!origineValide(request)) return REFUS_ORIGINE()
     const corps = (await request.json().catch(() => null)) as { email?: unknown } | null
     const r = await demanderReinitialisation(corps?.email, adresseIp(request), envoyer)
-    // Les tests attendent l'envoi ; en production il part en arrière-plan.
+    // Les tests attendent l'envoi ; en production il part après la réponse, via after() :
+    // sans lui, Vercel arrête la fonction dès la réponse et l'e-mail peut ne jamais partir.
     if (envoyer) await r.envoi
+    else if (r.envoi) { const envoi = r.envoi; after(() => envoi) }
     return json(200, REPONSE_DEMANDE)
   })
 
