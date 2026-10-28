@@ -24,7 +24,7 @@ jobs:
       - run: npm ci
       - run: npm run relances
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_APP: ${{ secrets.DATABASE_URL_APP }}
           DATABASE_URL_MIGRATE: ${{ secrets.DATABASE_URL_MIGRATE }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
