@@ -1,0 +1,35 @@
+name: Relances quotidiennes
+
+# Alertes (actions en retard, recyclages, habilitations, déclarations) puis envoi des e-mails en file.
+# 06:00 UTC = 07:00 à Porto-Novo. Idempotent : un second passage le même jour n'envoie rien de plus.
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: relances
+  cancel-in-progress: false
+
+jobs:
+  relances:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run relances
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL_MIGRATE: ${{ secrets.DATABASE_URL_MIGRATE }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          APP_URL: ${{ secrets.APP_URL }}
