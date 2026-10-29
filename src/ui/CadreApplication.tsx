@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { api, messageErreur } from './api'
-import { IconeAlerte, IconeEchange, IconeListe, IconePersonne, IconePlus, IconeSortie } from './icones'
+import { IconeAlerte, IconeEchange, IconeHorloge, IconeListe, IconePersonne, IconePlus, IconeSortie } from './icones'
 import { DUREE_CONTEXTE_MS, listerSortie, viderCache } from '@/registre/hors-ligne'
 
 /**
@@ -99,6 +99,12 @@ export default function CadreApplication({ children }: { children: React.ReactNo
               <>
                 <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients">
                   <IconeListe /><span className="libelle">Vue d’ensemble</span>
+                </a>
+                <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre">
+                  <IconeHorloge /><span className="libelle">À relancer</span>
+                </a>
+                <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit">
+                  <IconeListe /><span className="libelle">Mini-audits</span>
                 </a>
                 <a className="lien-entete" href="/prospects/nouveau" title="Nouveau prospect">
                   <IconePlus className="icone" /><span className="libelle">Prospect</span>

@@ -148,10 +148,10 @@ describe('Catalogue des référentiels', () => {
     }
   })
 
-  it('les 5 référentiels ISO du site sont valides pour la base', async () => {
+  it('les 5 référentiels ISO du site et le mini-audit public (0052) sont valides pour la base', async () => {
     const dossier = path.join(process.cwd(), 'src', 'autodiagnostic', 'referentiels')
     const fichiers = readdirSync(dossier).filter((n) => n.endsWith('.json'))
-    expect(fichiers.length).toBe(5)
+    expect(fichiers.length).toBe(6)
     for (const nom of fichiers) {
       const r = JSON.parse(readFileSync(path.join(dossier, nom), 'utf8'))
       await creerReferentiel(code(r.referentiel), { echelleReponses: r.echelleReponses, niveaux: r.niveaux, themes: r.themes })
@@ -214,7 +214,7 @@ describe('Évaluation : création, réponses, résultat', () => {
     await expect(equipe((trx) => sql`update autodiagnostic set interlocuteur = 'Autre' where id = ${e.id}`.execute(trx))).rejects.toThrow(/définitive/)
   })
 
-  it('même résultat que l’algorithme du site vitrine sur les 5 référentiels réels (réponses tirées au hasard)', async () => {
+  it('même résultat que l’algorithme du site vitrine sur les référentiels réels (réponses tirées au hasard)', async () => {
     const dossier = path.join(process.cwd(), 'src', 'autodiagnostic', 'referentiels')
     let graine = 12345
     const hasard = () => { graine = (graine * 1103515245 + 12345) % 2147483648; return graine / 2147483648 }
