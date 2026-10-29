@@ -55,7 +55,7 @@ export default function PageOpportunites() {
 
   return (
     <>
-      <EnteteEquipe administrateur={d?.administrateur} />
+      <EnteteEquipe administrateur={d?.administrateur} courant="/opportunites" />
       <main className="contenu">
         <div className="tete-page">
           <div>

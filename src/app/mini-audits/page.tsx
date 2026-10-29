@@ -68,7 +68,7 @@ export default function PageMiniAudits() {
 
   return (
     <>
-      <EnteteEquipe administrateur={administrateur} />
+      <EnteteEquipe administrateur={administrateur} courant="/mini-audits" />
       <main className="contenu">
         <div className="tete-page">
           <div>

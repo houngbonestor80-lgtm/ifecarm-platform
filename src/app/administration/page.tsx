@@ -90,7 +90,7 @@ export default function PageAdministration() {
     setReinit(null)
     await agir(async () => {
       const r = await api<{ motDePasse: string }>(`/api/administration/consultants/${c.id}`, { method: 'PATCH', corps: { action: 'mot_de_passe' } })
-      setReinit({ nom: c.nom, email: c.email, motDePasse: r.motDePasse })
+      setReinit({ nom: c.nom, email: c.email, ...r })
     })
   }
 
@@ -116,7 +116,7 @@ Pour confirmer, tapez son email (${c.email}) :`,
     setProvisoire(null)
     if (await agir(async () => {
       const r = await api<{ motDePasse: string }>('/api/administration/consultants', { method: 'POST', corps: consultant })
-      setProvisoire({ nom: consultant.nom, email: consultant.email, motDePasse: r.motDePasse })
+      setProvisoire({ nom: consultant.nom, email: consultant.email, ...r })
     })) setConsultant({ nom: '', email: '' })
   }
 

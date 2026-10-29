@@ -77,7 +77,7 @@ export default function CadreApplication({ children }: { children: React.ReactNo
 
   return (
     <>
-      <header className="entete">
+      <header className={`entete${ctx?.consultant ? ' entete--outils' : ''}`}>
         <div className="entete__barre">
           <a className="marque" href={ctx?.consultant ? '/vue-ensemble' : '/inspections'} aria-label="IFECARM GROUP — Plateforme QHSE, accueil">
             <img src="/brand/logo-circle.svg" alt="" />
@@ -94,7 +94,17 @@ export default function CadreApplication({ children }: { children: React.ReactNo
             </div>
           )}
 
-          {ctx?.consultant && (
+          <nav className="entete__actions" aria-label="Session">
+            <a className="lien-entete" href="/mon-compte" title="Mon compte">
+              <IconePersonne /><span className="libelle">Mon compte</span>
+            </a>
+            <button type="button" className="lien-entete" onClick={deconnecter} title="Se déconnecter">
+              <IconeSortie /><span className="libelle">Déconnexion</span>
+            </button>
+          </nav>
+        </div>
+        {ctx?.consultant && (
+          <div className="entete__sous">
             <nav className="entete__outils" aria-label="Outils de l’équipe">
               <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients">
                 <IconeListe /><span className="libelle">Vue d’ensemble</span>
@@ -111,18 +121,15 @@ export default function CadreApplication({ children }: { children: React.ReactNo
               <a className="lien-entete" href="/entreprises" title="Changer d’entreprise">
                 <IconeEchange /><span className="libelle">Changer d’entreprise</span>
               </a>
+              <a className="lien-entete lien-entete--mobile" href="/mon-compte" title="Mon compte">
+                <IconePersonne /><span className="libelle">Mon compte</span>
+              </a>
+              <button type="button" className="lien-entete lien-entete--mobile" onClick={deconnecter} title="Se déconnecter">
+                <IconeSortie /><span className="libelle">Déconnexion</span>
+              </button>
             </nav>
-          )}
-
-          <nav className="entete__actions" aria-label="Session">
-            <a className="lien-entete" href="/mon-compte" title="Mon compte">
-              <IconePersonne /><span className="libelle">Mon compte</span>
-            </a>
-            <button type="button" className="lien-entete" onClick={deconnecter} title="Se déconnecter">
-              <IconeSortie /><span className="libelle">Déconnexion</span>
-            </button>
-          </nav>
-        </div>
+          </div>
+        )}
         {ctx && (
           <nav className="onglets-app" aria-label="Modules">
             {[

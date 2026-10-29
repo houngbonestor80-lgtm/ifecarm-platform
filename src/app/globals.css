@@ -134,8 +134,9 @@ p { margin: 0; }
   font-weight: 600; font-size: 0.85rem; color: var(--brand-900);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; max-width: 28rem;
 }
-/* Actions : jamais de retour à la ligne dans un bouton, jamais de rétrécissement qui l'écrase. */
-.entete__actions, .entete__outils { display: flex; align-items: center; gap: 2px; flex: none; }
+/* Actions : jamais de retour à la ligne dans un bouton, jamais de rétrécissement qui l'écrase.
+   Tous les liens gardent leur libellé : c'est la barre d'outils (ci-dessous), pas le texte, qui absorbe le manque de place. */
+.entete__actions { display: flex; align-items: center; gap: 2px; flex: none; }
 .lien-entete {
   background: none; border: 0; padding: 9px 11px; border-radius: 999px; cursor: pointer;
   font: inherit; font-size: 0.82rem; font-weight: 600; color: var(--ink-500); text-decoration: none;
@@ -144,20 +145,26 @@ p { margin: 0; }
 .lien-entete svg { width: 18px; height: 18px; flex: none; }
 .lien-entete:hover { background: var(--ink-50); color: var(--ink-900); }
 .lien-entete:focus-visible { outline: 2px solid var(--brand-600); outline-offset: 1px; }
+.lien-entete[aria-current='page'] { background: var(--brand-50); color: var(--brand-700); }
 
-/* Libellés : ils cèdent la place à l'icône quand la place manque, mais restent lus par les lecteurs d'écran
-   (masquage visuel, pas display:none). Plus la barre a de liens, plus la largeur exigée pour les libellés est grande. */
-.entete__outils .libelle,
-.entete__actions:has(> :nth-child(n+7)) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-@media (max-width: 1099px) {
-  .entete__actions:has(> :nth-child(n+6)) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* Barre d'outils de l'équipe IFECARM : une ligne à part sous le logo, icône + texte pour chaque outil.
+   Elle défile sur elle-même si l'écran est trop étroit (comme les onglets), la page ne déborde jamais. */
+.entete__sous { border-top: 1px solid var(--ink-100); }
+.entete__outils {
+  max-width: 1120px; margin: 0 auto; padding: 3px 16px; display: flex; gap: 2px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.entete__outils::-webkit-scrollbar { display: none; }
+.entete__outils .lien-entete { padding: 7px 12px; }
+.lien-entete--mobile { display: none; }
+
+/* Quand la place compte (mobile, tablette), on garde le texte et on retire l'icône du bouton. */
+@media (max-width: 900px) {
+  .entete__outils .lien-entete svg { display: none; }
 }
 /* Barre avec pastille d'entreprise : il faut de la place pour le nom de l'entreprise. */
 @media (max-width: 1023px) {
   .entete__barre:has(.entete__entreprise) .marque__texte { display: none; }
-}
-@media (max-width: 899px) {
-  .entete__barre:has(.entete__entreprise) .entete__actions .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
 .onglets-app { max-width: 1120px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; overflow-x: auto; }
@@ -205,28 +212,29 @@ a.action--lien[href]:hover { border-color: var(--brand-600); }
 .evolution__barre--faible { background: var(--qhse-orange); }
 .evolution__libelle { font-size: 0.75rem; color: var(--ink-500); font-weight: 600; }
 
-/* Téléphone : tout est en icônes. La barre avec outils d'équipe passe sur deux lignes de boutons entiers
-   (logo, entreprise et compte en haut ; outils répartis sur toute la largeur en dessous). */
+/* Téléphone. Barre avec outils d'équipe : logo et entreprise en haut, outils (et compte) en dessous, avec leur texte.
+   Pages d'équipe sans entreprise : logo et outils sur la même ligne. Un client n'a que deux boutons de compte : icônes. */
 @media (max-width: 640px) {
   .marque__texte { display: none; }
-  .entete .lien-entete:has(svg) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .entete__entreprise { flex: 1 1 0; margin-left: 0; }
-  .entete__barre:has(.entete__outils) { flex-wrap: wrap; }
-  .entete__outils { order: 3; flex: 1 1 100%; justify-content: space-between; border-top: 1px solid var(--ink-100); padding-top: 6px; }
-  .entete__outils .lien-entete { flex: 1 1 0; min-width: 0; }
+  .entete--outils .entete__actions { display: none; }
+  .lien-entete--mobile { display: inline-flex; }
+  .entete__outils { padding-inline: 10px; }
+  .entete__barre:has(.entete__entreprise) .entete__actions .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .entete--equipe { display: flex; align-items: center; }
+  .entete--equipe .entete__barre { flex: none; margin: 0; padding-right: 4px; }
+  .entete--equipe .entete__sous { flex: 1 1 0; min-width: 0; border-top: 0; }
+  .entete--equipe .entete__outils { padding-block: 10px; }
 }
-/* Barre à 6 liens ou plus (pages d'équipe) : les boutons se partagent la largeur restante, sans jamais déborder. */
-@media (max-width: 640px) {
-  .entete__actions:has(> :nth-child(n+6)) { flex: 1 1 0; min-width: 0; }
-  .entete__actions:has(> :nth-child(n+6)) .lien-entete { flex: 1 1 0; min-width: 0; padding-inline: 0; }
-}
-/* Petit écran : le nom de l'entreprise passe avant l'étiquette « Prospect » (indiquée dans l'info-bulle). */
+/* Un compte client a, sur petit écran, un seul espace pour le nom de l'entreprise : il passe avant l'étiquette « Prospect ». */
 @media (max-width: 480px) {
-  .entete__entreprise .badge { display: none; }
+  .entete:not(.entete--outils) .entete__entreprise .badge { display: none; }
 }
+/* Très petit écran : deux boutons de compte en texte seul (sans icône), pour tenir à côté du logo. */
 @media (max-width: 359px) {
   .entete__barre { padding-inline: 10px; gap: 8px; }
-  .lien-entete { padding: 9px 7px; }
+  .entete__barre:not(:has(.entete__entreprise)) .lien-entete svg { display: none; }
+  .lien-entete { padding: 9px 8px; }
 }
 
 /* ---------------------------------------------------------------------
