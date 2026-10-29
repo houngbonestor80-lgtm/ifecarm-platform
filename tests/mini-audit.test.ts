@@ -9,7 +9,7 @@ import { lireResultat } from '@/mini-audit/service'
 import { traiterConversionMiniAudit, traiterEnvoiMiniAudit, traiterListeMiniAudits, traiterQuestionnairesMiniAudit, traiterSuiviMiniAudit } from '@/mini-audit/routes'
 import type { Courriel } from '@/notifications/email'
 import { libererA2f } from './aide-a2f'
-import { creerFixtures, nettoyerFixtures, MOT_DE_PASSE_FIXTURES, type Fixtures } from './fixtures'
+import { corpsConnexion, creerFixtures, nettoyerFixtures, type Fixtures } from './fixtures'
 
 /**
  * Mini-audit gratuit public (migration 0052) : envoi sans compte (réponses complètes, score calculé en base, limites),
@@ -57,7 +57,7 @@ const req = (methode: string, corps?: unknown, entetes: Record<string, string> =
 })
 const avecSession = (jeton: string, methode: string, corps?: unknown) => req(methode, corps, { cookie: `ifecarm_session=${encodeURIComponent(jeton)}` })
 async function session(id: string): Promise<string> {
-  const r = await traiterConnexion(req('POST', { email: emails.get(id), motDePasse: MOT_DE_PASSE_FIXTURES }, { 'x-forwarded-for': ipAuHasard() }))
+  const r = await traiterConnexion(req('POST', JSON.parse(corpsConnexion(emails.get(id))), { 'x-forwarded-for': ipAuHasard() }))
   const jeton = jetonDepuisRequete(new Request(ORIGINE, { headers: { cookie: r.headers.get('set-cookie')!.split(';')[0]! } }))!
   await libererA2f(jeton)
   return jeton

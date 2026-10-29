@@ -9,7 +9,7 @@ import { messageRelance } from '@/opportunites/messages'
 import { traiterListeOpportunites, traiterSuiviOpportunite } from '@/opportunites/routes'
 import { lienWhatsApp, numeroWhatsApp } from '@/ui/whatsapp'
 import { libererA2f } from './aide-a2f'
-import { creerFixtures, nettoyerFixtures, MOT_DE_PASSE_FIXTURES, type Fixtures } from './fixtures'
+import { corpsConnexion, creerFixtures, nettoyerFixtures, type Fixtures } from './fixtures'
 
 /**
  * Opportunités de vente (migration 0053) : échéances regroupées par entreprise et par objet, périmètre du consultant
@@ -38,7 +38,7 @@ const req = (methode: string, corps?: unknown, entetes: Record<string, string> =
   body: corps === undefined ? undefined : JSON.stringify(corps),
 })
 async function session(id: string): Promise<string> {
-  const r = await traiterConnexion(req('POST', { email: emails.get(id), motDePasse: MOT_DE_PASSE_FIXTURES }, { 'x-forwarded-for': ipAuHasard() }))
+  const r = await traiterConnexion(req('POST', JSON.parse(corpsConnexion(emails.get(id))), { 'x-forwarded-for': ipAuHasard() }))
   const jeton = jetonDepuisRequete(new Request(ORIGINE, { headers: { cookie: r.headers.get('set-cookie')!.split(';')[0]! } }))!
   await libererA2f(jeton)
   return jeton

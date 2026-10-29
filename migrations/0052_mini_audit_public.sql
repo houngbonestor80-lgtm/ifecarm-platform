@@ -15,7 +15,7 @@
 --       soumettre_mini_audit()       contrôle les réponses, calcule le score (calculer_resultat_autodiagnostic, même
 --                                    formule que B1), limite 5 demandes par heure et par IP, 3 par jour et par e-mail.
 --       lire_mini_audit(code)        le résultat, pour qui détient le code (jamais l'e-mail ni le téléphone).
---   - Le code de suivi (MA-XXXX-XXXX-XXXX, 60 bits aléatoires) sert de secret : impossible à deviner.
+--   - Le code de suivi (MA-XXXX-XXXX-XXXX, 60 bits aléatoires) sert de secret ; impossible à deviner.
 --   - Équipe IFECARM (consultant, admin) : lit toutes les demandes (RLS), change le suivi (suivre_mini_audit),
 --     convertit en prospect (convertir_mini_audit, réutilise creer_prospect : plafond, modules, accès, journal).
 --     Converti et sans suite sont définitifs. Jamais visible d'un client.
