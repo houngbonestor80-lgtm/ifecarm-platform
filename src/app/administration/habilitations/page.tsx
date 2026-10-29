@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api, messageErreur } from '@/ui/api'
-import { IconeCoche, IconePlus, IconeSortie } from '@/ui/icones'
+import { IconeCoche, IconeOutil, IconePlus, IconeSortie } from '@/ui/icones'
 import { LIBELLE_DOMAINE_HABILITATION } from '@/ui/libelles'
 
 interface Type { id: string, code: string, intitule: string, domaine: string, referentiel: string | null, validite_mois: number | null, actif: boolean }
@@ -55,7 +55,7 @@ export default function PageCatalogueHabilitations() {
             <span className="marque__texte"><span className="marque__nom">IFECARM GROUP</span><span className="marque__sous">Plateforme QHSE</span></span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/administration"><span className="libelle">Administration</span></a>
+            <a className="lien-entete" href="/administration" title="Clients, modules et accès"><IconeOutil /><span className="libelle">Administration</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter}><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>

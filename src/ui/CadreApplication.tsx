@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { api, messageErreur } from './api'
-import { IconeAlerte, IconeEchange, IconeHorloge, IconeListe, IconePersonne, IconePlus, IconeSortie } from './icones'
+import { IconeAlerte, IconeBouclier, IconeEchange, IconeHorloge, IconeListe, IconePersonne, IconePlus, IconeSortie } from './icones'
 import { DUREE_CONTEXTE_MS, listerSortie, viderCache } from '@/registre/hors-ligne'
 
 /**
@@ -88,32 +88,33 @@ export default function CadreApplication({ children }: { children: React.ReactNo
           </a>
 
           {ctx && (
-            <div className="entete__entreprise" title="Entreprise active">
+            <div className="entete__entreprise" title={ctx.entreprise.statutRelation === 'prospect' ? `${ctx.entreprise.nom} (prospect), entreprise active` : `${ctx.entreprise.nom}, entreprise active`}>
               <span className="entete__entreprise-nom">{ctx.entreprise.nom}</span>
               {ctx.entreprise.statutRelation === 'prospect' && <span className="badge badge--prospect">Prospect</span>}
             </div>
           )}
 
+          {ctx?.consultant && (
+            <nav className="entete__outils" aria-label="Outils de l’équipe">
+              <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients">
+                <IconeListe /><span className="libelle">Vue d’ensemble</span>
+              </a>
+              <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre">
+                <IconeHorloge /><span className="libelle">À relancer</span>
+              </a>
+              <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit">
+                <IconeBouclier /><span className="libelle">Mini-audits</span>
+              </a>
+              <a className="lien-entete" href="/prospects/nouveau" title="Nouveau prospect">
+                <IconePlus className="icone" /><span className="libelle">Prospect</span>
+              </a>
+              <a className="lien-entete" href="/entreprises" title="Changer d’entreprise">
+                <IconeEchange /><span className="libelle">Changer d’entreprise</span>
+              </a>
+            </nav>
+          )}
+
           <nav className="entete__actions" aria-label="Session">
-            {ctx?.consultant && (
-              <>
-                <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients">
-                  <IconeListe /><span className="libelle">Vue d’ensemble</span>
-                </a>
-                <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre">
-                  <IconeHorloge /><span className="libelle">À relancer</span>
-                </a>
-                <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit">
-                  <IconeListe /><span className="libelle">Mini-audits</span>
-                </a>
-                <a className="lien-entete" href="/prospects/nouveau" title="Nouveau prospect">
-                  <IconePlus className="icone" /><span className="libelle">Prospect</span>
-                </a>
-                <a className="lien-entete" href="/entreprises" title="Changer d’entreprise">
-                  <IconeEchange /><span className="libelle">Changer</span>
-                </a>
-              </>
-            )}
             <a className="lien-entete" href="/mon-compte" title="Mon compte">
               <IconePersonne /><span className="libelle">Mon compte</span>
             </a>

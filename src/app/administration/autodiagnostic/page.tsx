@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { api, messageErreur } from '@/ui/api'
-import { IconeCoche, IconeCroix, IconePlus, IconeSortie } from '@/ui/icones'
+import { IconeCoche, IconeCroix, IconeOutil, IconePlus, IconeSortie } from '@/ui/icones'
 
 interface Ligne { id: string, code: string, titre: string, description: string, duree_estimee_minutes: number, avertissement: string, actif: boolean, nb_questions: number, nb_evaluations: number }
 interface Question { id: string, texte: string, aide: string, poids: number, recommandation: string }
@@ -132,7 +132,7 @@ export default function PageCatalogueAutodiagnostic() {
             <span className="marque__texte"><span className="marque__nom">IFECARM GROUP</span><span className="marque__sous">Plateforme QHSE</span></span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/administration"><span className="libelle">Administration</span></a>
+            <a className="lien-entete" href="/administration" title="Clients, modules et accès"><IconeOutil /><span className="libelle">Administration</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter}><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>

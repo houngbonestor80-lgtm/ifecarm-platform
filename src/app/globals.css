@@ -115,30 +115,50 @@ p { margin: 0; }
 }
 .entete__barre {
   max-width: 1120px; margin: 0 auto; padding: 10px 16px;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; gap: 10px 14px;
 }
-.marque { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
+.marque { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
 .marque img { width: 40px; height: 40px; flex: none; }
-.marque__texte { display: flex; flex-direction: column; line-height: 1.1; }
+.marque__texte { display: flex; flex-direction: column; line-height: 1.1; white-space: nowrap; }
 .marque__nom { font-weight: 700; color: var(--brand-900); letter-spacing: 0.04em; font-size: 0.9rem; }
 .marque__sous { font-size: 0.72rem; color: var(--ink-400); font-weight: 600; letter-spacing: 0.02em; }
 
+/* Entreprise active : la pastille rétrécit (nom coupé par « … ») avant que quoi que ce soit ne déborde. */
 .entete__entreprise {
-  margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0;
+  margin-left: auto; display: flex; align-items: center; gap: 8px; flex: 0 1 auto; min-width: 0;
   padding: 6px 12px; border-radius: 999px; background: var(--brand-50);
   border: 1px solid var(--brand-100);
 }
+.entete__entreprise .badge { flex: none; }
 .entete__entreprise-nom {
   font-weight: 600; font-size: 0.85rem; color: var(--brand-900);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 32vw;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; max-width: 28rem;
 }
-.entete__actions { display: flex; align-items: center; gap: 4px; }
+/* Actions : jamais de retour à la ligne dans un bouton, jamais de rétrécissement qui l'écrase. */
+.entete__actions, .entete__outils { display: flex; align-items: center; gap: 2px; flex: none; }
 .lien-entete {
-  background: none; border: 0; padding: 8px 10px; border-radius: 999px; cursor: pointer;
+  background: none; border: 0; padding: 9px 11px; border-radius: 999px; cursor: pointer;
   font: inherit; font-size: 0.82rem; font-weight: 600; color: var(--ink-500); text-decoration: none;
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: none; white-space: nowrap;
 }
+.lien-entete svg { width: 18px; height: 18px; flex: none; }
 .lien-entete:hover { background: var(--ink-50); color: var(--ink-900); }
+.lien-entete:focus-visible { outline: 2px solid var(--brand-600); outline-offset: 1px; }
+
+/* Libellés : ils cèdent la place à l'icône quand la place manque, mais restent lus par les lecteurs d'écran
+   (masquage visuel, pas display:none). Plus la barre a de liens, plus la largeur exigée pour les libellés est grande. */
+.entete__outils .libelle,
+.entete__actions:has(> :nth-child(n+7)) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 1099px) {
+  .entete__actions:has(> :nth-child(n+6)) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+/* Barre avec pastille d'entreprise : il faut de la place pour le nom de l'entreprise. */
+@media (max-width: 1023px) {
+  .entete__barre:has(.entete__entreprise) .marque__texte { display: none; }
+}
+@media (max-width: 899px) {
+  .entete__barre:has(.entete__entreprise) .entete__actions .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 
 .onglets-app { max-width: 1120px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; overflow-x: auto; }
 .onglets-app a {
@@ -185,10 +205,28 @@ a.action--lien[href]:hover { border-color: var(--brand-600); }
 .evolution__barre--faible { background: var(--qhse-orange); }
 .evolution__libelle { font-size: 0.75rem; color: var(--ink-500); font-weight: 600; }
 
+/* Téléphone : tout est en icônes. La barre avec outils d'équipe passe sur deux lignes de boutons entiers
+   (logo, entreprise et compte en haut ; outils répartis sur toute la largeur en dessous). */
 @media (max-width: 640px) {
   .marque__texte { display: none; }
-  .entete__entreprise-nom { max-width: 42vw; }
-  .lien-entete .libelle { display: none; }
+  .entete .lien-entete:has(svg) .libelle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .entete__entreprise { flex: 1 1 0; margin-left: 0; }
+  .entete__barre:has(.entete__outils) { flex-wrap: wrap; }
+  .entete__outils { order: 3; flex: 1 1 100%; justify-content: space-between; border-top: 1px solid var(--ink-100); padding-top: 6px; }
+  .entete__outils .lien-entete { flex: 1 1 0; min-width: 0; }
+}
+/* Barre à 6 liens ou plus (pages d'équipe) : les boutons se partagent la largeur restante, sans jamais déborder. */
+@media (max-width: 640px) {
+  .entete__actions:has(> :nth-child(n+6)) { flex: 1 1 0; min-width: 0; }
+  .entete__actions:has(> :nth-child(n+6)) .lien-entete { flex: 1 1 0; min-width: 0; padding-inline: 0; }
+}
+/* Petit écran : le nom de l'entreprise passe avant l'étiquette « Prospect » (indiquée dans l'info-bulle). */
+@media (max-width: 480px) {
+  .entete__entreprise .badge { display: none; }
+}
+@media (max-width: 359px) {
+  .entete__barre { padding-inline: 10px; gap: 8px; }
+  .lien-entete { padding: 9px 7px; }
 }
 
 /* ---------------------------------------------------------------------

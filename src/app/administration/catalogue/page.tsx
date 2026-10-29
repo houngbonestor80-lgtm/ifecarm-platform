@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { api, messageErreur } from '@/ui/api'
-import { IconeCoche, IconeSortie } from '@/ui/icones'
+import { IconeCoche, IconeOutil, IconeSortie } from '@/ui/icones'
 
 interface Fiche { id: string, slug: string, intitule: string, domaine: string, duree_jours: string | null, duree_libelle: string | null, validite_mois: number | null, actif: boolean }
 
@@ -62,7 +62,7 @@ export default function PageCatalogue() {
             <span className="marque__texte"><span className="marque__nom">IFECARM GROUP</span><span className="marque__sous">Plateforme QHSE</span></span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/administration"><span className="libelle">Administration</span></a>
+            <a className="lien-entete" href="/administration" title="Clients, modules et accès"><IconeOutil /><span className="libelle">Administration</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter}><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>

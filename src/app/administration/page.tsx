@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { api, messageErreur } from '@/ui/api'
-import { IconeCoche, IconePlus, IconeSortie } from '@/ui/icones'
+import { IconeCoche, IconeListe, IconePlus, IconeSortie } from '@/ui/icones'
 
 type Module = 'inspections' | 'tableau_bord' | 'formations' | 'incidents' | 'habilitations' | 'autodiagnostic'
 interface Entreprise {
@@ -137,7 +137,7 @@ Pour confirmer, tapez son email (${c.email}) :`,
             <span className="marque__texte"><span className="marque__nom">IFECARM GROUP</span><span className="marque__sous">Plateforme QHSE</span></span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/vue-ensemble"><span className="libelle">Vue d’ensemble</span></a>
+            <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients"><IconeListe /><span className="libelle">Vue d’ensemble</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter}><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>

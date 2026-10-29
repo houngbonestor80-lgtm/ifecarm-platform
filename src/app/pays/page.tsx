@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { api, messageErreur } from '@/ui/api'
-import { IconeCoche, IconePlus, IconeSortie } from '@/ui/icones'
+import { IconeCoche, IconeListe, IconePlus, IconeSortie } from '@/ui/icones'
 
 interface Pays { code: string, nom: string, actif: boolean, entreprises: number }
 
@@ -71,7 +71,7 @@ export default function PagePays() {
             </span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/vue-ensemble"><span className="libelle">Vue d’ensemble</span></a>
+            <a className="lien-entete" href="/vue-ensemble" title="Vue d’ensemble de tous les clients"><IconeListe /><span className="libelle">Vue d’ensemble</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter}><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>

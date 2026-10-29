@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ficheDe } from '@/formations/catalogue'
 import { api, messageErreur } from '@/ui/api'
-import { IconeAlerte, IconeHorloge, IconePersonne, IconePlus, IconeSortie } from '@/ui/icones'
+import { IconeAlerte, IconeBatiment, IconeBouclier, IconeGlobe, IconeHorloge, IconeOutil, IconePersonne, IconePlus, IconeSortie } from '@/ui/icones'
 
 interface Ligne {
   entreprise_id: string
@@ -108,13 +108,13 @@ export default function PageVueEnsemble() {
             </span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
-            <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre"><span className="libelle">À relancer</span></a>
-            <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit"><span className="libelle">Mini-audits</span></a>
+            <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre"><IconeHorloge /><span className="libelle">À relancer</span></a>
+            <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit"><IconeBouclier /><span className="libelle">Mini-audits</span></a>
             <a className="lien-entete" href="/prospects/nouveau" title="Nouveau prospect"><IconePlus className="icone" /><span className="libelle">Prospect</span></a>
-            {d?.administrateur && <a className="lien-entete" href="/administration" title="Clients, modules et accès"><span className="libelle">Administration</span></a>}
-            <a className="lien-entete" href="/pays" title="Pays d’intervention"><span className="libelle">Pays</span></a>
-            <a className="lien-entete" href="/entreprises" title="Choisir une entreprise"><span className="libelle">Entreprises</span></a>
-            <a className="lien-entete" href="/mon-compte" title="Mon compte"><span className="libelle">Mon compte</span></a>
+            {d?.administrateur && <a className="lien-entete" href="/administration" title="Clients, modules et accès"><IconeOutil /><span className="libelle">Administration</span></a>}
+            <a className="lien-entete" href="/pays" title="Pays d’intervention"><IconeGlobe /><span className="libelle">Pays</span></a>
+            <a className="lien-entete" href="/entreprises" title="Choisir une entreprise"><IconeBatiment /><span className="libelle">Entreprises</span></a>
+            <a className="lien-entete" href="/mon-compte" title="Mon compte"><IconePersonne /><span className="libelle">Mon compte</span></a>
             <button type="button" className="lien-entete" onClick={deconnecter} title="Se déconnecter"><IconeSortie /><span className="libelle">Déconnexion</span></button>
           </nav>
         </div>
