@@ -7,20 +7,11 @@
  * séparateurs ---, gras **, code `…`, liens [texte](adresse) (le texte seul est gardé).
  * Usage : npm run guide:pdf
  */
+import 'dotenv/config'
 import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import fontkit from '@pdf-lib/fontkit'
 import { PDFDocument, rgb, type PDFFont, type PDFPage, type RGB } from 'pdf-lib'
-
-// Papier à en-tête officiel (mêmes données que src/inspections/rapport.ts, recopiées pour ne pas charger le stockage S3).
-const ENTETE = {
-  colonnes: [
-    { titre: 'SIÈGE INTERNATIONAL', lignes: ['6 rue d’Armaillé, Paris — France', '(+33) 7 67 72 43 68', 'SIREN 952 449 346 R.C.S · Code NAF 71.12B'] },
-    { titre: 'SIÈGE AFRIQUE', lignes: ['Aïbatin Kpota, Cotonou — Bénin', '(+229) 01 91 38 44 44 · 01 91 32 24 70', 'RCCM RB/COT/26 B 42475 · IFU 3202686150102'] },
-    { titre: 'CONTACT', lignes: ['info@ifecarm-qhse.com', 'www.ifecarm-qhse.com'] },
-  ],
-}
-
 
 const RACINE = process.cwd()
 const SOURCE = path.join(RACINE, 'docs', 'guide-utilisation.md')
@@ -40,6 +31,8 @@ const BAS = 62
 type Mot = { t: string, f: PDFFont, c: RGB, espace: boolean }
 
 async function main() {
+  // Papier à en-tête officiel : lu depuis le rapport d'inspection (une seule source), chargé ici pour ne pas le dupliquer.
+  const { ENTETE } = await import('../src/inspections/rapport')
   const md = readFileSync(SOURCE, 'utf8').replace(/\r\n/g, '\n')
   const pdf = await PDFDocument.create()
   pdf.registerFontkit(fontkit)

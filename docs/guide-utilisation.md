@@ -1,6 +1,6 @@
 # Plateforme QHSE IFECARM GROUP — Guide d'utilisation
 
-Version du 08/10/2026. Ce guide décrit ce que fait la plateforme, écran par écran, pour chaque personne qui l'utilise.
+Version du 29/10/2026. Ce guide décrit ce que fait la plateforme, écran par écran, pour chaque personne qui l'utilise.
 Repérez votre profil dans le chapitre 1, lisez le chapitre 2 (connexion, commun à tous), puis le chapitre de votre profil.
 
 ---
@@ -32,6 +32,7 @@ La plateforme est un outil de travail : chaque entreprise cliente a son espace, 
 | **Consultant IFECARM GROUP** | Conduire les inspections, tenir les registres, planifier les formations, saisir les habilitations, mener les autodiagnostics, créer les comptes du client | Agir sur une entreprise dont vous n'avez pas le mandat ; réservé à l'administrateur : voir le chapitre 6 |
 | **Administrateur de la plateforme** | Tout, y compris créer les clients, activer les modules, donner les mandats, gérer les catalogues | Intervenir dans l'entreprise interne IFECARM GROUP |
 | **Prospect** | Même rôle qu'un client : consultation seule | |
+| **Visiteur** (sans compte) | Faire le mini-audit gratuit sur la page publique et recevoir son résultat (voir 5.13) | Voir quoi que ce soit d'autre |
 
 Un **prospect** est une entreprise pas encore cliente chez qui un consultant réalise une première inspection ou un premier autodiagnostic ; ces évaluations sont conservées quand il devient client.
 
@@ -250,6 +251,40 @@ Des blocs **Notes internes** existent aussi sur les inspections, les actions, le
 ### 5.12 Vous n'êtes jamais limité aux listes par défaut
 Partout où l'on choisit dans une liste, vous pouvez écrire votre propre valeur : site, checklist d'inspection, points ajoutés en cours d'inspection, formation hors catalogue, type d'habilitation, type d'équipement, participants non connus. Seules les échelles de métier (gravité, nature des mesures, types de déclaration, rôles) sont fixes.
 
+### 5.13 Mini-audit gratuit : les demandes
+Le **mini-audit gratuit** sert à trouver de nouveaux clients. Il est ouvert à tous, **sans compte**, sur la page publique `/mini-audit` : à vous de communiquer ce lien (site, WhatsApp, LinkedIn).
+
+**Ce que fait le visiteur.** Il choisit le questionnaire (« Mini-audit QHSE gratuit » : 5 thèmes, 15 questions, environ 5 minutes), répond à toutes les questions, puis laisse ses coordonnées : nom et prénom, entreprise, e-mail professionnel, pays, et facultativement fonction, téléphone ou WhatsApp, secteur et effectif. Il doit cocher son accord pour être recontacté. Il voit aussitôt son **score sur 100**, son niveau et ses priorités, avec un **code de suivi** (`MA-XXXX-XXXX-XXXX`) qui rouvre son résultat. Il reçoit aussi son résultat par e-mail. Le diagnostic est **indicatif** : il le précise, il ne remplace pas un audit sur site.
+
+**Ce que vous voyez.** Chaque demande arrive dans **Mini-audits** (menu de l'équipe, page « Demandes du mini-audit gratuit »), réservée aux consultants et aux administrateurs. **Les administrateurs reçoivent aussi un e-mail** à chaque nouvelle demande (entreprise, pays, score, contact). Les demandes sont classées : **À traiter**, **Convertis**, **Sans suite**, **Toutes**.
+
+Pour chaque demande, vous voyez l'entreprise, le contact, le score et le statut, avec :
+- **WhatsApp** : ouvre une conversation avec un message de rappel déjà écrit (absent si le numéro manque ou est inexploitable). Un clic passe la demande de **Nouveau** à **Contacté**.
+- **Marquer contacté** : sans passer par WhatsApp (appel, e-mail).
+- **Convertir en prospect** : crée le prospect, avec le nom de l'entreprise, et vous y emmène. L'entreprise suit les règles habituelles des prospects (voir 5.2 : plafond de 50 prospects actifs par consultant).
+- **Sans suite** : classe la demande. C'est définitif, comme « Converti ».
+
+**Règles à connaître.** Un visiteur ne peut envoyer que 5 demandes par heure depuis la même connexion et 3 par jour avec la même adresse e-mail. Ses réponses et coordonnées ne sont jamais visibles d'un client. Seul le questionnaire marqué « public » est proposé : il est installé à la mise en ligne ; il n'y a pas encore d'écran pour en changer.
+
+### 5.14 Clients à relancer
+La plateforme connaît déjà les échéances de vos clients. **À relancer** (menu de l'équipe, page « Clients à relancer ») les regroupe **par entreprise et par sujet** pour vous aider à proposer la bonne prestation au bon moment, par exemple : « 8 salariés : recyclage SST à partir du 12/12 ».
+
+Trois sortes d'échéances y figurent :
+- **Recyclages de formation** : attestations valides qui arrivent à échéance (la plus récente de chaque salarié présent) ;
+- **Habilitations** actives à renouveler ;
+- **Vérifications d'équipements** à faire.
+
+Vous voyez les clients de vos mandats ; l'administrateur voit tous les clients. La fenêtre par défaut est de **90 jours** (au choix : 30, 60, 90, 180 ou 365 jours), et les échéances **dépassées depuis moins de 180 jours** y restent. Un badge indique « dans N jours » ou le nombre d'échéances **échues** ; le contact est le responsable du client (administrateur d'entreprise ou responsable QHSE).
+
+Pour chaque ligne :
+- **WhatsApp** : un message est déjà rédigé (le sujet, le nombre de salariés ou d'équipements, la date). Vous le **relisez et l'envoyez vous-même** : rien ne part tout seul. Un bouton **e-mail** ouvre le même texte dans votre messagerie. Le premier clic sur WhatsApp marque la ligne **Contacté**.
+- **Marquer contacté**, **Gagné** (avec une note : montant, date de session), **Plus tard**, **Perdu** (avec la raison). Votre nom, la date et la note restent affichés.
+- Si une échéance plus lointaine apparaît ensuite pour le même sujet, la ligne se **rouvre** automatiquement.
+
+Les onglets sont : **À relancer**, **Contactés**, **Traités** (gagné, perdu, plus tard) et **Toutes**.
+
+Chaque **lundi**, vous recevez un **e-mail récapitulatif** des opportunités à relancer (au plus un par semaine, seulement s'il y en a). Ces informations sont réservées à l'équipe IFECARM GROUP : **jamais visibles d'un client**.
+
 ---
 
 ## 6. Vous êtes administrateur
@@ -284,13 +319,16 @@ Réservé à l'administrateur, impossible si des actions en dépendent.
 
 ## 7. Les e-mails et alertes automatiques
 
-Une tâche quotidienne prépare les messages ; ils partent par e-mail à l'adresse des destinataires indiqués.
+Une tâche quotidienne prépare les messages ; ils partent par e-mail à l'adresse des destinataires indiqués. Seuls les messages du mini-audit partent immédiatement, à l'envoi de la demande.
 
 | Alerte | Quand | Qui la reçoit |
 |---|---|---|
 | **Actions en retard** (inspections, incidents, autodiagnostic) | 7 jours avant l'échéance, le jour de l'échéance, 7 jours puis 30 jours après | Le responsable de l'action (s'il a un compte), l'administrateur d'entreprise et le responsable QHSE |
 | **Recyclage d'une attestation de formation** | 90, 30 et 7 jours avant l'échéance, puis le jour de l'échéance | Administrateur d'entreprise, responsable QHSE, responsable du site du salarié |
 | **Habilitation à renouveler** | 90, 30 et 7 jours avant l'échéance, puis le jour de l'échéance | Administrateur d'entreprise, responsable QHSE, responsable du site du salarié |
+| **Résultat du mini-audit** | Dès que le visiteur a envoyé sa demande | Le visiteur |
+| **Nouvelle demande de mini-audit** | Dès qu'une demande arrive | Les administrateurs de la plateforme |
+| **Clients à relancer** (récapitulatif) | Le lundi, au plus une fois par semaine, s'il y a des opportunités | Chaque membre de l'équipe IFECARM GROUP concerné |
 | **Mot de passe oublié** | À votre demande | Vous |
 
 Pour chaque alerte, le message correspond au jalon le plus avancé atteint (pas de rafale si la tâche n'a pas tourné pendant un mois), et un même jalon n'est jamais envoyé deux fois. Les messages ne contiennent pas de détails sensibles.
