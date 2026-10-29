@@ -1,0 +1,165 @@
+{
+  "referentiel": "mini-audit-qhse",
+  "titre": "Mini-audit QHSE gratuit",
+  "description": "15 questions pour situer en 5 minutes la santé, la sécurité et l'environnement de votre entreprise.",
+  "dureeEstimeeMinutes": 5,
+  "avertissement": "Diagnostic indicatif établi à partir de vos seules réponses. Il ne remplace ni une visite sur site ni un audit.",
+  "public": true,
+  "echelleReponses": [
+    { "code": "oui", "libelle": "Oui, en place", "coefficient": 1 },
+    { "code": "partiel", "libelle": "En partie, ou de façon informelle", "coefficient": 0.5 },
+    { "code": "non", "libelle": "Non", "coefficient": 0 },
+    { "code": "ne-sais-pas", "libelle": "Je ne sais pas", "coefficient": 0 }
+  ],
+  "niveaux": [
+    {
+      "seuilMin": 0,
+      "seuilMax": 39,
+      "libelle": "Exposé",
+      "message": "Votre entreprise est exposée : plusieurs bases de la prévention manquent. Un accident ou un contrôle peut coûter cher. Un premier diagnostic sur site permet de fixer les priorités."
+    },
+    {
+      "seuilMin": 40,
+      "seuilMax": 59,
+      "libelle": "À structurer",
+      "message": "Des actions existent, mais elles restent dispersées. En les organisant, vous réduisez nettement vos risques et vous préparez les contrôles sereinement."
+    },
+    {
+      "seuilMin": 60,
+      "seuilMax": 79,
+      "libelle": "Bien engagé",
+      "message": "Votre démarche est sérieuse. Quelques écarts restent à traiter pour la rendre solide et durable, voire certifiable."
+    },
+    {
+      "seuilMin": 80,
+      "seuilMax": 100,
+      "libelle": "Maîtrisé",
+      "message": "Votre démarche QHSE est solide. Un audit externe confirmerait votre niveau et préparerait une certification ISO."
+    }
+  ],
+  "themes": [
+    {
+      "code": "organisation",
+      "libelle": "Organisation et réglementation",
+      "questions": [
+        {
+          "id": "org-1",
+          "texte": "Une personne est-elle clairement chargée de la santé, de la sécurité et de l'environnement dans l'entreprise ?",
+          "aide": "Un responsable QHSE, un référent sécurité ou un dirigeant qui y consacre du temps.",
+          "poids": 2,
+          "recommandation": "Nommer un référent QHSE avec du temps et un mandat écrit : sans pilote, les actions s'arrêtent vite."
+        },
+        {
+          "id": "org-2",
+          "texte": "Connaissez-vous les obligations réglementaires de sécurité et d'environnement qui s'appliquent à votre activité ?",
+          "poids": 3,
+          "recommandation": "Établir la liste de vos obligations réglementaires (veille) : c'est la première chose vérifiée lors d'un contrôle."
+        },
+        {
+          "id": "org-3",
+          "texte": "La direction a-t-elle fixé par écrit des objectifs de santé, de sécurité ou d'environnement ?",
+          "poids": 1,
+          "recommandation": "Formaliser une politique QHSE courte avec deux ou trois objectifs chiffrés, signée par la direction."
+        }
+      ]
+    },
+    {
+      "code": "risques",
+      "libelle": "Évaluation et prévention des risques",
+      "questions": [
+        {
+          "id": "ris-1",
+          "texte": "Les risques de chaque poste de travail sont-ils évalués par écrit (document unique ou équivalent) ?",
+          "aide": "En France : le DUERP, obligatoire dès le premier salarié.",
+          "poids": 3,
+          "recommandation": "Réaliser l'évaluation écrite des risques par unité de travail (DUERP) et la tenir à jour chaque année."
+        },
+        {
+          "id": "ris-2",
+          "texte": "Les travaux dangereux (hauteur, point chaud, électricité, espace confiné) font-ils l'objet d'un permis ou d'une autorisation écrite ?",
+          "poids": 3,
+          "recommandation": "Mettre en place des permis de travail pour les opérations dangereuses : ils évitent la plupart des accidents graves."
+        },
+        {
+          "id": "ris-3",
+          "texte": "Un plan d'action avec responsables et délais existe-t-il pour réduire les risques identifiés ?",
+          "poids": 2,
+          "recommandation": "Transformer l'évaluation des risques en plan d'action suivi (qui, quoi, quand), revu au moins chaque trimestre."
+        }
+      ]
+    },
+    {
+      "code": "competences",
+      "libelle": "Formation et habilitations",
+      "questions": [
+        {
+          "id": "com-1",
+          "texte": "Les nouveaux arrivants reçoivent-ils un accueil sécurité avant de prendre leur poste ?",
+          "poids": 2,
+          "recommandation": "Instaurer un accueil sécurité systématique et tracé pour tout nouvel arrivant, intérimaire et sous-traitant."
+        },
+        {
+          "id": "com-2",
+          "texte": "Les formations obligatoires (secourisme, incendie, conduite d'engins, électricité…) sont-elles à jour et suivies avec leurs dates de recyclage ?",
+          "poids": 3,
+          "recommandation": "Tenir une matrice des formations et habilitations avec leurs échéances, et planifier les recyclages à l'avance."
+        },
+        {
+          "id": "com-3",
+          "texte": "Disposez-vous d'un nombre suffisant de secouristes formés sur chaque site et chaque équipe ?",
+          "poids": 2,
+          "recommandation": "Former des secouristes (SST) en nombre suffisant sur chaque site et chaque horaire de travail."
+        }
+      ]
+    },
+    {
+      "code": "incidents",
+      "libelle": "Incidents et amélioration",
+      "questions": [
+        {
+          "id": "inc-1",
+          "texte": "Les accidents, incidents et presque-accidents sont-ils déclarés et enregistrés ?",
+          "aide": "Un presque-accident est un événement qui aurait pu blesser quelqu'un.",
+          "poids": 3,
+          "recommandation": "Mettre en place un registre simple des accidents et presque-accidents, accessible à tous les salariés, même sur téléphone."
+        },
+        {
+          "id": "inc-2",
+          "texte": "Après un incident, les causes sont-elles analysées et des actions décidées pour éviter qu'il se reproduise ?",
+          "poids": 2,
+          "recommandation": "Analyser les causes de chaque incident (méthode des 5 pourquoi ou arbre des causes) et suivre les actions jusqu'à leur clôture."
+        },
+        {
+          "id": "inc-3",
+          "texte": "Des inspections ou visites de sécurité sont-elles réalisées régulièrement sur le terrain ?",
+          "poids": 2,
+          "recommandation": "Planifier des inspections de sécurité régulières avec une checklist et un suivi des non-conformités."
+        }
+      ]
+    },
+    {
+      "code": "equipements",
+      "libelle": "Équipements et environnement",
+      "questions": [
+        {
+          "id": "equ-1",
+          "texte": "Les vérifications périodiques des équipements (extincteurs, installations électriques, appareils de levage…) sont-elles à jour ?",
+          "poids": 3,
+          "recommandation": "Tenir un registre des équipements avec leurs dates de vérification et les rapports des organismes de contrôle."
+        },
+        {
+          "id": "equ-2",
+          "texte": "Les équipements de protection individuelle sont-ils fournis, adaptés et effectivement portés ?",
+          "poids": 2,
+          "recommandation": "Définir les EPI par poste, en tracer la remise et vérifier leur port lors des visites terrain."
+        },
+        {
+          "id": "equ-3",
+          "texte": "Les déchets et produits dangereux sont-ils triés, stockés et éliminés par des filières adaptées ?",
+          "poids": 2,
+          "recommandation": "Organiser le tri et le stockage des déchets et produits dangereux, et conserver les justificatifs d'élimination."
+        }
+      ]
+    }
+  ]
+}

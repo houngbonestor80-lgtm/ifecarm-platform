@@ -3,7 +3,8 @@
  *   1. relances des actions correctives en retard (B3, migration 0041) ;
  *   2. alertes de renouvellement des habilitations (B4, migration 0043) ;
  *   3. alertes de recyclage des attestations de formation (B2, migration 0044) ;
- *   4. envoi des e-mails mis en file par les trois fonctions ci-dessus (si SMTP_HOST est renseigné).
+ *   4. le lundi, résumé des opportunités de vente à relancer pour chaque membre de l'équipe IFECARM (migration 0053) ;
+ *   5. envoi des e-mails mis en file par les fonctions ci-dessus (si SMTP_HOST est renseigné).
  * Idempotent : relancer le script le même jour ne renvoie rien de plus (une alerte par élément et par jalon ; un
  * e-mail envoyé n'est jamais renvoyé).
  * Les trois fonctions SQL passent par ifecarm_app (withoutTenant : SECURITY DEFINER, aucun droit de plus requis).
@@ -24,6 +25,12 @@ async function main() {
   const habilitations = await compter('alerter_habilitations')
   const recyclages = await compter('alerter_recyclages')
   console.log(`${new Date().toISOString()} — ${actions} relance(s) d'action, ${habilitations} alerte(s) d'habilitation, ${recyclages} alerte(s) de recyclage créée(s).`)
+  // Lundi (heure UTC du serveur) : une fois par semaine et par personne, la base l'assure.
+  if (new Date().getUTCDay() === 1) {
+    const url = (process.env.APP_URL ?? '').replace(/\/+$/, '')
+    const resumes = (await withoutTenant((trx) => sql<{ n: number }>`select envoyer_resume_opportunites(${url}) as n`.execute(trx))).rows[0]?.n ?? 0
+    console.log(`Opportunités de vente : ${resumes} résumé(s) hebdomadaire(s) mis en file.`)
+  }
 
   if (!emailConfigure()) { console.log('E-mail : SMTP_HOST non renseigné, la file reste en attente.'); return }
   const url = process.env.DATABASE_URL_MIGRATE

@@ -279,10 +279,10 @@ textarea.saisie { min-height: 88px; resize: vertical; }
 .choix__titre { font-weight: 700; color: var(--ink-900); font-size: 0.95rem; }
 .choix__meta { font-size: 0.8rem; color: var(--ink-400); margin-top: 4px; }
 
-.onglets { display: inline-flex; padding: 4px; gap: 4px; border-radius: 999px; background: var(--surface-cloud); }
+.onglets { display: inline-flex; padding: 4px; gap: 4px; border-radius: 999px; background: var(--surface-cloud); max-width: 100%; overflow-x: auto; }
 .onglets button {
   border: 0; background: transparent; padding: 8px 16px; border-radius: 999px; cursor: pointer;
-  font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--ink-500);
+  font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--ink-500); white-space: nowrap;
 }
 .onglets button[aria-pressed='true'] { background: var(--surface); color: var(--brand-700); box-shadow: var(--shadow-subtle); }
 

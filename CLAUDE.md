@@ -19,12 +19,13 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 
 - Next.js 16 (App Router, Turbopack) + TypeScript. Lire `node_modules/next/dist/docs/` avant de coder (voir AGENTS.md).
 - PostgreSQL 15+, Row Level Security
-- Kysely + migrations SQL brutes dans `migrations/` (dernière : `0051_souhaits_libres.sql`), jouées par `npm run migrate`. Types : `npm run codegen`. Pas de Prisma (incompatible avec `SET LOCAL` sur le pool).
+- Kysely + migrations SQL brutes dans `migrations/` (dernière : `0053_opportunites_vente.sql`), jouées par `npm run migrate`. Types : `npm run codegen`. Pas de Prisma (incompatible avec `SET LOCAL` sur le pool).
 - Sessions maison (pas de fournisseur d'auth externe)
 - Stockage fichiers S3, SeaweedFS en local (port 9000, bucket `ifecarm-platform-dev`). En production : Backblaze B2 (compatible S3).
 - **Production (mise en ligne fin octobre 2026)** : Vercel (https://ifecarm-platform.vercel.app, projet `ifecarm-platform`, plan Hobby, fonctions en `fra1` Francfort) ; base Neon `ifecarm-platform-eu` (AWS eu-central-1 Francfort, plan gratuit, Postgres 18, connexions directes, base mise en veille si inactive) ; e-mails Brevo ; relances quotidiennes par GitHub Actions (`.github/workflows/relances.yml`, cron 06:00 UTC, secrets `DATABASE_URL_APP` et `DATABASE_URL_MIGRATE`). Dépôt : https://github.com/houngbonestor80-lgtm/ifecarm-platform. Mise en ligne rejouable : `node scripts/mise-en-ligne.mjs` avec `OWNER_URL` (rôle propriétaire, adresse directe) ; il crée les rôles, applique les migrations, importe les catalogues, crée l'admin et écrit `secrets-mise-en-ligne.local` (ignoré par Git). Une base Neon ne change pas de région : en créer une nouvelle et rejouer le script, puis mettre à jour `DATABASE_URL_APP` (Vercel + GitHub) et `DATABASE_URL_MIGRATE` (GitHub), et redéployer.
 - Local via Docker : `npm run db:up` (Postgres + stockage). Tests : `npm test` (vitest, vraie base). Types : `npx tsc --noEmit`.
 - PDF : pdf-lib + polices dans `assets/pdf/`. Applications terrain en PWA (pas de natif)
+
 
 ## Structure `src/`
 
@@ -32,6 +33,7 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 - `inspections/` service, routes, photos, rapport PDF, tableau de bord, vue d'ensemble, prospect
 - `equipements/` · `modeles/` · `acces/` (comptes) · `administration/` · `pays/` · `suivi/` (notes) · `formations/` (catalogue JSON)
 - `registre/`, `tableau-bord/`, `storage/` (S3), `ui/` (composants), `app/` (pages et routes API)
+- `mini-audit/` (mini-audit gratuit public, 0052) · `opportunites/` (relances de vente, 0053) · `ui/whatsapp.ts` (liens wa.me prérédigés)
 - Convention : `service.ts` (logique, reçoit `trx`) + `routes.ts` (Request → Response, testable) ; `src/app/api/**` ne fait que réexporter.
 
 ## Modules
@@ -53,6 +55,8 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 | Pays | pays d'intervention, gérés en base (`/pays`) | fait |
 | Notes internes | bloc « Notes internes » sur inspection, action, session de formation, équipement, déclaration (`note_objet`, `src/ui/NotesInternes.tsx`), équipe IFECARM seulement | fait 06/10/2026 |
 | Suivi | notes internes et demandes de formation (participants, date, note) par entreprise, jamais visibles du client (`/suivi`) | fait |
+| Mini-audit | page PUBLIQUE `/mini-audit` (sans compte, indexable) : questionnaire court (`mini-audit-qhse.json`, `public`), coordonnées, résultat immédiat `/mini-audit/[code]` (code de suivi MA-XXXX-XXXX-XXXX), e-mail au prospect + alerte aux admins ; écran équipe `/mini-audits` (WhatsApp/e-mail prérédigés, contacté, sans suite, conversion en prospect) | fait 29/10/2026 (0052), à tester en local |
+| Opportunités | `/opportunites` « Clients à relancer » : recyclages B2, habilitations B4, vérifications d'équipements regroupés par entreprise et objet, message WhatsApp prérédigé, suivi (contacté, gagné, perdu, plus tard) ; résumé e-mail du lundi à l'équipe (`npm run relances`) | fait 29/10/2026 (0053), à tester en local |
 
 ## Règles de sécurité — à ne jamais casser
 
@@ -105,6 +109,8 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 - B1 écrans : `src/autodiagnostic/` (service, routes, rapport PDF, VoletAutodiagnostic, classes). Le client (admin d'entreprise, responsable QHSE) lit les évaluations terminées, leur PDF et leurs actions ; le consultant conduit, termine, crée les actions (`changerStatutAction` accepte maintenant les origines `inspection` ET `audit`) ; l'admin gère les référentiels, supprime une évaluation terminée. `nombre_evaluations_autodiagnostic()` (0049) : l'admin ne voit pas les évaluations des clients (RLS), seulement leur nombre. Prospects (0050, 08/10/2026) : `creer_prospect()` active aussi `autodiagnostic`, le déclencheur `verifier_modules_prospect()` l'accepte (les autres modules de client restent interdits à un prospect), les prospects existants ont reçu le module ; l'évaluation suit la conversion en client. Pas encore : notes internes sur une évaluation.
 - Site écrit librement (07/10/2026) : liste des sites OU « Autre site (saisir son nom) » (`src/ui/ChoixSite.tsx`, `resoudreSite()` dans `inspections/service.ts`, nom déjà connu = site réutilisé) dans équipements, nouveau salarié (habilitations) et inspections ; registre de sécurité : « Autre site » à écrire dans « Lieu précis » (le client ne crée pas de site, RLS).
 - PWA (07/10/2026) : plateforme installable (`src/app/manifest.ts`, icônes `public/icons/`, start_url `/`). `public/sw.js` (v3) : statiques en cache d'abord, `/registre*` réseau d'abord, toute autre page = réseau seulement, sinon `/hors-ligne.html` (statique, sans donnée) ; JAMAIS d'`/api/*` en cache, aucun cache de données de B2/B4/tableau de bord. Enregistré pour tous par `src/ui/ServiceWorker.tsx` (production seulement) ; nouvelle version = bandeau « Actualiser » (pas de skipWaiting automatique). Décisions de l'utilisateur : hors ligne = saisie B3 seulement ; pas de lecture de données hors ligne. Contexte gardé sur l'appareil (localStorage `ifecarm.contexte` + cache IndexedDB sites/salariés) limité à 12 h comme la session (`DUREE_CONTEXTE_MS`) ; la boîte d'envoi des déclarations n'expire pas.
+- Mini-audit (0052) : le public n'a aucun droit direct sur `mini_audit` (fonctions SECURITY DEFINER `questionnaires_mini_audit`, `soumettre_mini_audit`, `lire_mini_audit`) ; score calculé en base (`calculer_resultat_autodiagnostic`, même formule que B1) ; 5 envois par heure et par IP, 3 par jour et par e-mail ; champ piège `siteWeb` ; consentement obligatoire. Lecture des demandes : toute l'équipe IFECARM (consultants et admins, pas de mandat requis). Conversion = `creer_prospect` (plafond, modules, accès) + coordonnées + service « audit » ; converti et sans suite définitifs. Un référentiel est proposé au public si `referentiel_autodiagnostic.public` (import : clé `public` du JSON). Le site vitrine n'y renvoie pas encore (lien à ajouter dans le dépôt `ifecarm`).
+- Opportunités (0053) : calculées à la volée (`opportunites_pour`, interne), mêmes critères que les alertes 0043/0044 ; fenêtre = horizon (7 à 365 j, 90 par défaut) + échues depuis 180 j ; consultant = mandats en cours, admin = tous ; seul le suivi est stocké (`suivi_opportunite`, couvre jusqu'à la dernière échéance connue, une échéance plus lointaine rouvre l'opportunité). WhatsApp par lien wa.me (envoi manuel, pas d'API Meta) ; indicatif selon le pays, 0 initial retiré pour la France seulement.
 - Fournisseur d'e-mail : Brevo (décision 07/10/2026), relais SMTP `smtp-relay.brevo.com:587` STARTTLS exigé quand `SMTP_USER` est défini ; identifiants saisis en production (variables `SMTP_*` sur Vercel) ; l'expéditeur validé dans Brevo reste l'ancienne adresse de Nestor : valider `ifecarmgroup@gmail.com` si on veut envoyer depuis elle. Jalons de recyclage B2 alignés sur B3/B4 : 90, 30, 7, échéance.
 - E-mail : SMTP générique (`src/notifications/email.ts`, variables `SMTP_*`, `APP_URL`), Mailpit en local (`npm run db:up`, interface sur le port 8025) ; fournisseur de production à choisir. `npm run relances` met en file puis ENVOIE la file (`file.ts`, rôle de migration) si `SMTP_HOST` est défini.
 
@@ -127,6 +133,7 @@ Outil de travail interne, pas une vitrine (le site vitrine `ifecarm` est un dép
 6. En ligne depuis fin octobre 2026 (voir Stack). L'utilisateur décide de chaque mise en ligne ; `scripts/mise-en-ligne.mjs` n'est pas encore commité.
 7. Compte administrateur de production : `ifecarmgroup@gmail.com` (nom « Ifecarm Group »), changé par UPDATE direct en base le 29/10/2026 (aucun écran de changement d'e-mail ; ce changement n'a pas de trace dans `journal_audit`). 2FA active. À faire : tester en bloc en production (2FA, mot de passe oublié, B2, B3, B4, photos, PWA en HTTPS) et valider l'expéditeur Brevo.
 8. Catalogue d'habilitations : durées de départ HAUTEUR 12 mois, ECHAF 36, INCENDIE-EPI 12 (hypothèses de Nestor, modifiables par l'admin dans `/administration/habilitations`) ; déjà importé en production par `mise-en-ligne.mjs`.
+9. Mini-audit et opportunités (29/10/2026, branche `feat/mini-audit-et-relances`) : le build Vercel ne joue pas les migrations ; au déploiement, appliquer 0052-0053 et `npm run import:autodiagnostic` sur Neon (avec `DATABASE_URL_MIGRATE`), puis ajouter le lien « Mini-audit gratuit » sur le site vitrine.
 
 ## À trancher (hors technique)
 

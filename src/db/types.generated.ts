@@ -393,6 +393,33 @@ export interface JournalAudit {
   utilisateur_id: string | null;
 }
 
+export interface MiniAudit {
+  adresse_ip: string | null;
+  code_suivi: string;
+  consentement: boolean;
+  cree_le: Generated<Timestamp>;
+  definition: Json;
+  effectif: string | null;
+  email: string;
+  entreprise_id: string | null;
+  entreprise_nom: string;
+  fonction: string | null;
+  id: Generated<string>;
+  niveau_libelle: string;
+  nom_contact: string;
+  pays: string;
+  referentiel_code: string;
+  referentiel_titre: string;
+  reponses: Json;
+  resultat: Json;
+  score_global: number;
+  secteur: string | null;
+  statut: Generated<string>;
+  suivi_le: Timestamp | null;
+  suivi_par: string | null;
+  telephone: string | null;
+}
+
 export interface ModeleInspection {
   actif: Generated<boolean>;
   cible_type: string;
@@ -509,6 +536,7 @@ export interface ReferentielAutodiagnostic {
   duree_estimee_minutes: number;
   id: Generated<string>;
   modifie_le: Generated<Timestamp>;
+  public: Generated<boolean>;
   titre: string;
 }
 
@@ -519,6 +547,11 @@ export interface RelanceAction {
   id: Generated<string>;
   jalon: string;
   notification_id: string | null;
+}
+
+export interface ResumeOpportuniteEnvoye {
+  semaine: Timestamp;
+  utilisateur_id: string;
 }
 
 export interface RoleUtilisateur {
@@ -598,6 +631,19 @@ export interface Site {
   nom: string;
   pays: string | null;
   ville: string | null;
+}
+
+export interface SuiviOpportunite {
+  cle: string;
+  echeance_couverte: Timestamp;
+  entreprise_id: string;
+  id: Generated<Int8>;
+  le: Generated<Timestamp>;
+  note: string | null;
+  par: string | null;
+  par_nom: string;
+  statut: string;
+  type: string;
 }
 
 export interface TentativeConnexion {
@@ -751,6 +797,7 @@ export interface DB {
   item_inspection: ItemInspection;
   item_modele_inspection: ItemModeleInspection;
   journal_audit: JournalAudit;
+  mini_audit: MiniAudit;
   modele_inspection: ModeleInspection;
   non_conformite: NonConformite;
   note_objet: NoteObjet;
@@ -763,12 +810,14 @@ export interface DB {
   rapport_inspection: RapportInspection;
   referentiel_autodiagnostic: ReferentielAutodiagnostic;
   relance_action: RelanceAction;
+  resume_opportunite_envoye: ResumeOpportuniteEnvoye;
   role_utilisateur: RoleUtilisateur;
   salarie: Salarie;
   schema_migrations: SchemaMigrations;
   session: Session;
   session_formation: SessionFormation;
   site: Site;
+  suivi_opportunite: SuiviOpportunite;
   tentative_connexion: TentativeConnexion;
   type_habilitation: TypeHabilitation;
   utilisateur: Utilisateur;

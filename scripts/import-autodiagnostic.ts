@@ -1,6 +1,6 @@
 /**
  * Import des référentiels d'autodiagnostic du site vitrine (src/autodiagnostic/referentiels/*.json, copie de
- * ifecarm/server/assets/autodiagnostics) dans `referentiel_autodiagnostic`. Rejouable : ne CRÉE que les codes absents ;
+ * ifecarm/server/assets/autodiagnostics, plus mini-audit-qhse.json propre à la plateforme, « public » : mini-audit gratuit) dans `referentiel_autodiagnostic`. Rejouable : ne CRÉE que les codes absents ;
  * ne touche JAMAIS à un référentiel existant (l'administrateur peut l'avoir modifié) ni aux évaluations. Ne supprime rien.
  * Le contenu est validé par la base (definition_autodiagnostic_valide) : un fichier invalide fait échouer l'import.
  * Connecte avec ifecarm_migrate (propriétaire), comme import:habilitations.
@@ -20,6 +20,8 @@ interface Fichier {
   echelleReponses: unknown
   niveaux: unknown
   themes: unknown
+  /** Proposé sur la page publique du mini-audit (migration 0052). */
+  public?: boolean
 }
 
 async function main() {
@@ -39,8 +41,8 @@ async function main() {
       if (rows.length) { existants++; continue }
       const questions = (r.themes as { questions: unknown[] }[]).reduce((n, t) => n + t.questions.length, 0)
       await client.query(
-        'INSERT INTO referentiel_autodiagnostic (code, titre, description, duree_estimee_minutes, avertissement, definition) VALUES ($1, $2, $3, $4, $5, $6)',
-        [r.referentiel, r.titre, r.description, r.dureeEstimeeMinutes, r.avertissement, JSON.stringify({ echelleReponses: r.echelleReponses, niveaux: r.niveaux, themes: r.themes })],
+        'INSERT INTO referentiel_autodiagnostic (code, titre, description, duree_estimee_minutes, avertissement, definition, public) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [r.referentiel, r.titre, r.description, r.dureeEstimeeMinutes, r.avertissement, JSON.stringify({ echelleReponses: r.echelleReponses, niveaux: r.niveaux, themes: r.themes }), r.public === true],
       )
       crees++
       console.log(`  + ${r.referentiel} — ${r.titre} (${(r.themes as unknown[]).length} thèmes, ${questions} questions)`)

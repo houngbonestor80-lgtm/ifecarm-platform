@@ -108,6 +108,8 @@ export default function PageVueEnsemble() {
             </span>
           </a>
           <nav className="entete__actions" aria-label="Session" style={{ marginLeft: 'auto' }}>
+            <a className="lien-entete" href="/opportunites" title="Échéances des clients à vendre"><span className="libelle">À relancer</span></a>
+            <a className="lien-entete" href="/mini-audits" title="Demandes du mini-audit gratuit"><span className="libelle">Mini-audits</span></a>
             <a className="lien-entete" href="/prospects/nouveau" title="Nouveau prospect"><IconePlus className="icone" /><span className="libelle">Prospect</span></a>
             {d?.administrateur && <a className="lien-entete" href="/administration" title="Clients, modules et accès"><span className="libelle">Administration</span></a>}
             <a className="lien-entete" href="/pays" title="Pays d’intervention"><span className="libelle">Pays</span></a>
